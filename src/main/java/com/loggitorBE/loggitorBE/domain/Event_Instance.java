@@ -35,12 +35,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	)
 
 @NamedNativeQuery(name="Event_Instance.getActionLogTable", query="SELECT "
-		+ "EVENT.NAME, DEFECT_SEVERITY.SEVERITY, EVENT.DESC, ACTION.ACTION_NAME, EVENT_INSTANCE.ID " + 
-		"FROM EVENT_INSTANCE , EVENT , DEFECT_SEVERITY , ACTION " + 
-		"WHERE (((EVENT_INSTANCE.DATE) = :date) " + 
+		+ "( EVENT.NAME, DEFECT_SEVERITY.SEVERITY, EVENT.DESC, ACTION.ACTION_NAME, EVENT_INSTANCE.ID ) " + 
+		"FROM ( EVENT_INSTANCE , EVENT , DEFECT_SEVERITY , ACTION )" + 
+		"WHERE ((( EVENT_INSTANCE.DATE ) = :date ) " + 
 		"AND EVENT_INSTANCE.EVENT = EVENT.ID " + 
 		"AND EVENT.DEFECT_SEV =DEFECT_SEVERITY.ID " + 
-		"AND EVENT.ACTION = ACTION.ID)", resultSetMapping="ActionLogMapping")
+		"AND EVENT.ACTION = ACTION.ID )", resultSetMapping="ActionLogMapping")
 public class Event_Instance {
 
 	@Id
