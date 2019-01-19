@@ -35,12 +35,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	)
 
 @NamedNativeQuery(name="Event_Instance.getActionLogTable", query="SELECT "
-		+ "( EVENT.NAME, DEFECT_SEVERITY.SEVERITY, EVENT.DESC, ACTION.ACTION_NAME, EVENT_INSTANCE.ID ) " + 
-		"FROM ( EVENT_INSTANCE , EVENT , DEFECT_SEVERITY , ACTION )" + 
-		"WHERE ((( EVENT_INSTANCE.DATE ) = :date ) " + 
-		"AND EVENT_INSTANCE.EVENT = EVENT.ID " + 
-		"AND EVENT.DEFECT_SEV =DEFECT_SEVERITY.ID " + 
-		"AND EVENT.ACTION = ACTION.ID )", resultSetMapping="ActionLogMapping")
+		+ "( defined_events.name, defect_severity.severity, defined_events.desc, action.action_name, event_instance.id ) " + 
+		"FROM ( event_instance , defined_events , defect_severity , action )" + 
+		"WHERE ((( event_instance.date ) = :date ) " + 
+		"AND event_instance.occurred_event = defined_events.id " + 
+		"AND defined_events.defect_sev = defect_severity.id " + 
+		"AND defined_events.action = action.id )", resultSetMapping="ActionLogMapping")
 public class Event_Instance {
 
 	@Id
@@ -52,7 +52,7 @@ public class Event_Instance {
     @JoinColumn(name = "event")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonIgnore
-	Event event;
+	Event occurred_event;
 	
 	//empty constructor
 	public Event_Instance() {}
@@ -62,7 +62,7 @@ public class Event_Instance {
 	public Event_Instance(String date, Event event) {
 		super();
 		this.date = date;
-		this.event = event;
+		this.occurred_event = event;
 	}
 
 
@@ -92,15 +92,20 @@ public class Event_Instance {
 
 
 
-	public Event getEvent() {
-		return event;
+	public Event getOccurred_event() {
+		return occurred_event;
 	}
 
 
 
-	public void setEvent(Event event) {
-		this.event = event;
+	public void setOccurred_event(Event occurred_event) {
+		this.occurred_event = occurred_event;
 	}
+
+
+
+
+	
 	
 	
 	
