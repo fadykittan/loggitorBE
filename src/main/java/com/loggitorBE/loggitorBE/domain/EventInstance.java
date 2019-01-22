@@ -7,34 +7,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-
-
 @Entity
-public class App {
+public class EventInstance {
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	long id;
-	String name;
-	String type;
-	
-	
+	String date;
 
-    //private List<DefinedEvent> definedEvents = new ArrayList<DefinedEvent>();
+	
+	
+	//DefinedEvent occurred_event;
 	
 	//empty constructor
-	public App() {}
+	public EventInstance() {}
 
 
 
-	public App(String name, String type) {
+	public EventInstance(String date) {
 		super();
-		this.name = name;
-		this.type = type;
+		this.date = date;
 	}
 
-
+	
+	
+	
 	//getters and setters
 
 	public long getId() {
@@ -49,31 +46,28 @@ public class App {
 
 
 
-	public String getName() {
-		return name;
+	public String getDate() {
+		return date;
 	}
 
 
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 
-
-	public String getType() {
-		return type;
-	}
-
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
+	
 
 
 
 
 
+	
+	
+	
+	
+	
+	
 	
 }

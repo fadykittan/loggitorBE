@@ -1,79 +1,49 @@
 package com.loggitorBE.loggitorBE.domain;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
-
 @Entity
-public class App {
+public class FixAction {
 
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
 	String name;
-	String type;
-	
-	
 
-    //private List<DefinedEvent> definedEvents = new ArrayList<DefinedEvent>();
-	
-	//empty constructor
-	public App() {}
+	// private List<DefinedEvent> definedEvents = new ArrayList<DefinedEvent>();
 
-
-
-	public App(String name, String type) {
-		super();
-		this.name = name;
-		this.type = type;
+	// empty constructor
+	public FixAction() {
 	}
 
+	public FixAction(String name) {
+		super();
+		this.name = name;
+	}
+	
 
-	//getters and setters
+	// setters and getters
 
 	public long getId() {
 		return id;
 	}
 
-
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
-
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
 
-
-	public String getType() {
-		return type;
-	}
-
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
-
-
-
+	
 	
 }

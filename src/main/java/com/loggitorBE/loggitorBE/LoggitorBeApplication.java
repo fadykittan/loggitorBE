@@ -8,18 +8,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.loggitorBE.loggitorBE.domain.Action;
-import com.loggitorBE.loggitorBE.domain.Action_Repo;
+import com.loggitorBE.loggitorBE.domain.FixAction;
+import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 import com.loggitorBE.loggitorBE.domain.App;
-import com.loggitorBE.loggitorBE.domain.App_Repo;
-import com.loggitorBE.loggitorBE.domain.Defect_Severity;
-import com.loggitorBE.loggitorBE.domain.Defect_Severity_Repo;
-import com.loggitorBE.loggitorBE.domain.Event;
-import com.loggitorBE.loggitorBE.domain.Event_Instance;
-import com.loggitorBE.loggitorBE.domain.Event_Instance_Repo;
-import com.loggitorBE.loggitorBE.domain.Event_Repo;
-import com.loggitorBE.loggitorBE.domain.Event_Severity;
-import com.loggitorBE.loggitorBE.domain.Event_Severity_Repo;
+import com.loggitorBE.loggitorBE.domain.AppRepo;
+import com.loggitorBE.loggitorBE.domain.DefectSeverity;
+import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
+import com.loggitorBE.loggitorBE.domain.DefinedEvent;
+import com.loggitorBE.loggitorBE.domain.EventInstance;
+import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
+import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
+import com.loggitorBE.loggitorBE.domain.EventSeverity;
+import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 
 
 
@@ -31,17 +31,17 @@ private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplicati
 
 	
 	@Autowired
-	private App_Repo app;
+	private AppRepo app;
 	@Autowired
-	private Event_Severity_Repo evSev;
+	private EventSeverityRepo evSev;
 	@Autowired
-	private Defect_Severity_Repo defSev;
+	private DefectSeverityRepo defSev;
 	@Autowired
-	private Action_Repo act;
+	private FixActionRepo act;
 	@Autowired
-	private Event_Repo eve;
+	private DefinedEventRepo eve;
 	@Autowired
-	private Event_Instance_Repo eveIns;
+	private EventInstanceRepo eveIns;
 	
 	
 	public static void main(String[] args) {
@@ -57,36 +57,22 @@ private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplicati
     	  App a1 = new App("BLM","core");
     	  App a2 = new App("CLM","core");
 
-    	  Event_Severity e1 = new Event_Severity("critical");
-    	  Event_Severity e2 = new Event_Severity("error");
+    	  EventSeverity e1 = new EventSeverity("critical");
+    	  EventSeverity e2 = new EventSeverity("error");
     	  
-    	  Defect_Severity d1 = new Defect_Severity("d Critical");
-    	  Defect_Severity d2 = new Defect_Severity("d error");
+    	  DefectSeverity d1 = new DefectSeverity("d Critical");
+    	  DefectSeverity d2 = new DefectSeverity("d error");
     	  
-    	  Action ac1 = new Action("SMS","SMS");
-    	  Action ac2 = new Action("email","email");
+    	  FixAction ac1 = new FixAction("SMS");
+    	  FixAction ac2 = new FixAction("email");
     	  
-    	  Event ev1 = new Event(a1,d1,ac1,e1,"bigger","WTF", 50, ":/");
-    	  Event ev2 = new Event(a2,d2,ac2,e2,"bigger","WTF", 50, ":/");
+    	  DefinedEvent ev1 = new DefinedEvent(50, "bigger","WTF1", "idk1");
+    	  DefinedEvent ev2 = new DefinedEvent(80, "smaller","WTF2", "idk2");
     	  
-    	  Event_Instance ei1 = new Event_Instance("1",ev1);
-    	  Event_Instance ei2 = new Event_Instance("2",ev2);
+    	  EventInstance ei1 = new EventInstance("1");
+    	  EventInstance ei2 = new EventInstance("2");
     	  
     	  
-    	  a1.setEvents(ev1);
-    	  a2.setEvents(ev2);
-    	  
-    	  e1.setEvents(ev1);
-    	  e2.setEvents(ev2);
-    	  
-    	  d1.setEvents(ev1);
-    	  d2.setEvents(ev2);
-    	  
-    	  ac1.setEvents(ev1);
-    	  ac2.setEvents(ev2);
-    	  
-    	  ev1.setEvent_instances(ei1);
-    	  ev2.setEvent_instances(ei2);
     	  
     	  
     	  eve.save(ev1);
