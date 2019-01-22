@@ -19,7 +19,7 @@ public class FixAction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
-	String name;
+	String actionName;
 
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy="fixAction")
 	@OneToMany(mappedBy="fixAction")
@@ -31,25 +31,26 @@ public class FixAction {
 	public FixAction() {
 	}
 
-	public FixAction(String name) {
+	public FixAction(String actionName) {
 		super();
-		this.name = name;
+		this.actionName = actionName;
 	}
 
 
-	public FixAction(String name, Set<DefinedEvent> definedEvents) {
+	public FixAction(String actionName, Set<DefinedEvent> definedEvents) {
 		super();
-		this.name = name;
+		this.actionName = actionName;
 		this.definedEvents = definedEvents;
 	}
 
-	public FixAction(String name, DefinedEvent definedEvent) {
+	public FixAction(String actionName, DefinedEvent definedEvent) {
 		super();
-		this.name = name;
+		this.actionName = actionName;
 		this.definedEvents.add(definedEvent);
 	}
 	
 	// setters and getters
+
 	public long getId() {
 		return id;
 	}
@@ -58,12 +59,12 @@ public class FixAction {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getActionName() {
+		return actionName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
 	}
 
 	public Set<DefinedEvent> getDefinedEvents() {
@@ -74,6 +75,7 @@ public class FixAction {
 		this.definedEvents = definedEvents;
 	}
 
+	
 	
 	public void setDefinedEvent(DefinedEvent definedEvent) {
 		this.definedEvents.add(definedEvent);

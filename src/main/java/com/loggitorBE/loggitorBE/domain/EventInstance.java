@@ -29,15 +29,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	                @ColumnResult(name="NAME", type = String.class),
 	                @ColumnResult(name="SEVERITY", type = String.class),
 	                @ColumnResult(name="DESCRIPTION", type = String.class),
-	                @ColumnResult(name="NAME", type = String.class)
+	                @ColumnResult(name="ACTION_NAME", type = String.class)
 	            }
 	        )
 	    }
 	)
 
-@NamedNativeQuery(name="EventInstance.getEventInsTable", query="SELECT event_instance.id, defined_event.name, event_severity.severity, defined_event.description, fix_action.name " + 
+@NamedNativeQuery(name="EventInstance.getEventInsTable", query="SELECT event_instance.id, defined_event.name, event_severity.severity, defined_event.description, fix_action.action_name " + 
 		"FROM event_instance, defined_event, event_severity, fix_action " + 
-		"WHERE (event_instance.date = '1') AND (event_instance.occurred_event = defined_event.id) " + 
+		"WHERE (event_instance.date = :date) AND (event_instance.occurred_event = defined_event.id) " + 
 		"AND (defined_event.event_sev = event_severity.id) " + 
 		"AND (defined_event.fix_action = fix_action.id)", resultSetMapping="EventOnDateMapping")
 public class EventInstance {
