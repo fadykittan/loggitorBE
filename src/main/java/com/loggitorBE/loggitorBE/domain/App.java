@@ -1,10 +1,17 @@
 package com.loggitorBE.loggitorBE.domain;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 
@@ -19,9 +26,10 @@ public class App {
 	String name;
 	String type;
 	
-	
-
-    //private List<DefinedEvent> definedEvents = new ArrayList<DefinedEvent>();
+	@OneToMany(mappedBy="app")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnore
+	private Set<DefinedEvent> definedEvents = new HashSet<DefinedEvent>();
 	
 	//empty constructor
 	public App() {}
@@ -33,6 +41,17 @@ public class App {
 		this.name = name;
 		this.type = type;
 	}
+
+	
+	
+
+	public App(String name, String type, Set<DefinedEvent> definedEvents) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.definedEvents = definedEvents;
+	}
+
 
 
 	//getters and setters
@@ -72,6 +91,21 @@ public class App {
 	}
 
 
+
+	public Set<DefinedEvent> getDefinedEvents() {
+		return definedEvents;
+	}
+
+
+
+	public void setDefinedEvents(Set<DefinedEvent> definedEvents) {
+		this.definedEvents = definedEvents;
+	}
+
+
+	public void setDefinedEvent(DefinedEvent definedEvent) {
+		this.definedEvents.add(definedEvent);
+	}
 
 
 

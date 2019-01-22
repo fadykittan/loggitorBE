@@ -1,9 +1,17 @@
 package com.loggitorBE.loggitorBE.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class FixAction {
@@ -13,7 +21,11 @@ public class FixAction {
 	long id;
 	String name;
 
-	// private List<DefinedEvent> definedEvents = new ArrayList<DefinedEvent>();
+	//@OneToMany(cascade = CascadeType.ALL, mappedBy="fixAction")
+	@OneToMany(mappedBy="fixAction")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnore
+	private Set<DefinedEvent> definedEvents = new HashSet<DefinedEvent>();
 
 	// empty constructor
 	public FixAction() {
@@ -23,10 +35,21 @@ public class FixAction {
 		super();
 		this.name = name;
 	}
+
+
+	public FixAction(String name, Set<DefinedEvent> definedEvents) {
+		super();
+		this.name = name;
+		this.definedEvents = definedEvents;
+	}
+
+	public FixAction(String name, DefinedEvent definedEvent) {
+		super();
+		this.name = name;
+		this.definedEvents.add(definedEvent);
+	}
 	
-
 	// setters and getters
-
 	public long getId() {
 		return id;
 	}
@@ -43,6 +66,18 @@ public class FixAction {
 		this.name = name;
 	}
 
+	public Set<DefinedEvent> getDefinedEvents() {
+		return definedEvents;
+	}
+
+	public void setDefinedEvents(Set<DefinedEvent> definedEvents) {
+		this.definedEvents = definedEvents;
+	}
+
+	
+	public void setDefinedEvent(DefinedEvent definedEvent) {
+		this.definedEvents.add(definedEvent);
+	}
 
 	
 	
