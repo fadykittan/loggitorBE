@@ -1,6 +1,10 @@
 package com.loggitorBE.loggitorBE.domain;
 
 
+import java.math.BigInteger;
+
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,11 +12,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
+@SqlResultSetMapping(
+		name="EventOnDateMapping",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=EventInstanceOnDate.class,
+	            columns={
+	            		@ColumnResult(name="ID", type = BigInteger.class),
+	                @ColumnResult(name="NAME", type = String.class),
+	                @ColumnResult(name="SEVERITY", type = String.class),
+	                @ColumnResult(name="DESCRIPTION", type = String.class),
+	                @ColumnResult(name="NAME", type = String.class)
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="EventInstance.getEventInsTable", query="SELECT event_instance.id, defined_event.name, event_severity.severity, defined_event.description, fix_action.name " + 
+		"FROM event_instance, defined_event, event_severity, fix_action " + 
+		"WHERE (event_instance.date = '1') AND (event_instance.occurred_event = defined_event.id) " + 
+		"AND (defined_event.event_sev = event_severity.id) " + 
+		"AND (defined_event.fix_action = fix_action.id)", resultSetMapping="EventOnDateMapping")
 public class EventInstance {
 
 	@Id
