@@ -44,8 +44,8 @@ public class EventInstance {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	long id;
-	String date;
+	private long id;
+	private String date;
 
 	
 	@ManyToOne(fetch = FetchType.LAZY)
