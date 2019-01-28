@@ -36,7 +36,7 @@ public class LoggitorController {
 		return eventRepo.findAll();
 	}
 
-	///customers?p=1
+	///viewEvents?p=1
 	@RequestMapping(value = "/viewEvents", method = RequestMethod.GET)
 	public Iterable<DefinedEvent> viewEvents(@RequestParam(name = "p", defaultValue = "1") int pageNumber) {
 		@SuppressWarnings("deprecation")
