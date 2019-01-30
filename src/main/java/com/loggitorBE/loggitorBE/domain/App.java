@@ -22,9 +22,9 @@ public class App {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	long id;
-	String name;
-	String type;
+	private long id;
+	private String name;
+	private String type;
 	
 	@OneToMany(mappedBy="app")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -18,8 +18,8 @@ public class Email
 {
 	private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplication.class);
 	private static String emailHost = "smtp.gmail.com";
-	private static String fromUser = "ananghadban";// just the id alone without @gmail.com
-	private static String fromUserEmailPassword = "";
+	private static String fromUser = "loggitor.action.system";// just the id alone without @gmail.com
+	private static String fromUserEmailPassword = "0123action";
 	
 	public static void sendEmailMessage(String[] toEmails,String emailSubject,String emailBody) throws AddressException, MessagingException {
 		Session mailSession;

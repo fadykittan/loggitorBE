@@ -24,6 +24,7 @@ import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 import com.loggitorBE.loggitorBE.web.Email;
+import com.loggitorBE.loggitorBE.web.SMS;
 
 @SpringBootApplication
 public class LoggitorBeApplication {
@@ -46,7 +47,7 @@ public class LoggitorBeApplication {
 	public static void main(String[] args) throws AddressException, MessagingException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
 		logger.info("Hello Sping Boot!");
-
+        SMS.msgsend();
 	}
 
 	@Bean

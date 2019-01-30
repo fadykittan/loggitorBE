@@ -20,8 +20,8 @@ public class DefectSeverity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	long id;
-	String severity;
+	private long id;
+	private String severity;
 	
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy="defectSev")
 	@OneToMany(mappedBy="defectSev")
