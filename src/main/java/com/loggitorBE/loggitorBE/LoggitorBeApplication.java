@@ -55,7 +55,7 @@ public class LoggitorBeApplication {
 	CommandLineRunner runner() {
 		return args -> {
 
-			 eveIns.deleteAll();
+			//eveIns.deleteAll();
 
 			App a1 = new App("BLM", "core");
 			App a2 = new App("CLM", "core");
@@ -127,7 +127,6 @@ public class LoggitorBeApplication {
 
 			eveIns.save(ei1);
 			eveIns.save(ei2);
-
 		};
 	}
 
