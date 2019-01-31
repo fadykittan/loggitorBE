@@ -4,13 +4,18 @@ package com.loggitorBE.loggitorBE.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
-
-import java.math.BigInteger;
 
 
 // creating a query that pull the names of the applications from the app table
