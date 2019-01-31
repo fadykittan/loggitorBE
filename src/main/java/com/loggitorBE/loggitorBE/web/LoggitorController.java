@@ -57,8 +57,13 @@ public class LoggitorController {
 	public ArrayList<EventsResult> getEventsResult(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize, HttpServletRequest req,
 			HttpServletResponse res) throws ServletException {
 
-		return eventPagingRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
+		return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
 	}
+	
+	@RequestMapping("/eventsresult")
+	  public ArrayList<EventsResult> geEventsResults() {
+	    return eventRepo.getEventsResult();
+	  }
 	
 	@RequestMapping("/getEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {

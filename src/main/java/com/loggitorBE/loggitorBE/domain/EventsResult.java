@@ -29,20 +29,6 @@ public class EventsResult {
 	}
 	
 	
-	public EventsResult(String appName, String defSeverity, String comperator, int percent,
-			String eventSeverity, String actionName, String description) {
-		super();
-		this.appName = appName;
-		this.defSeverity = defSeverity;
-		this.comperator = comperator;
-		this.percent = percent;
-		this.eventSeverity = eventSeverity;
-		this.actionName = actionName;
-		this.description = description;
-	}
-	
-	
-	
 	public BigInteger  getId() {
 		return id;
 	}
