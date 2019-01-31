@@ -4,17 +4,59 @@ package com.loggitorBE.loggitorBE.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
+//a query that pull the defect severities from the database
+@SqlResultSetMapping(
+		name="DefSevCostume",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=DefectSevApi.class,
+	            columns={
+	                
+	                @ColumnResult(name="SEVERITY", type = String.class)
+	               
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="DefectSeverity.getDefectsSev", query="SELECT DISTINCT DEFECT_SEVERITY.SEVERITY"
+		+" FROM DEFECT_SEVERITY"
+		+" ORDER BY DEFECT_SEVERITY.SEVERITY DESC;",resultSetMapping="DefSevCostume")
+//a query that create a costume table that shows the severity,how much it occurred , and the percentage of it from the whole table 
+@SqlResultSetMapping(
+		name="ActionsBySeverityCostume",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=ActionsBySeverity.class,
+	            columns={
+	                
+	                @ColumnResult(name="SEVERITY", type = String.class),
+	                @ColumnResult(name="SEVERITY_COUNTER", type = int.class),
+	                @ColumnResult(name="PERCENT", type = double.class)
+	                
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="DefectSeverity.getActionsBySeverity", query="SELECT SEVERITY,COUNT(SEVERITY) AS SEVERITY_COUNTER,(COUNT(SEVERITY)*100/(SELECT COUNT(*) FROM DEFECT_SEVERITY)) AS PERCENT"
+		+" FROM DEFECT_SEVERITY"
+		+" GROUP BY SEVERITY",resultSetMapping="ActionsBySeverityCostume")
 public class DefectSeverity {
 
 
