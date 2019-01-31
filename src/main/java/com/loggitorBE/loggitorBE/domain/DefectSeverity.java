@@ -4,6 +4,7 @@ package com.loggitorBE.loggitorBE.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class DefectSeverity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
+	@Column(name="defect_severity")
 	private String severity;
 	
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy="defectSev")

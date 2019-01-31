@@ -78,6 +78,4 @@ public class EventsResult {
 		this.description = description;
 	}
 	
-	
-
 }
