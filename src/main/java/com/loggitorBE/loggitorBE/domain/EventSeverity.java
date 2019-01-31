@@ -21,8 +21,8 @@ public class EventSeverity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	long id;
-	String severity;
+	private long id;
+	private String severity;
 	
 	
 	@OneToMany(mappedBy="eventSev")

@@ -42,8 +42,8 @@ public class FixAction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
-	String actionName;
+	private long id;
+	private String actionName;
 
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy="fixAction")
 	@OneToMany(mappedBy="fixAction")

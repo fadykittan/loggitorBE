@@ -6,11 +6,11 @@ import java.math.BigInteger;
 public class EventInstanceOnDate {
 
 	
-	BigInteger id;
-	String eventName;
-	String severity;
-	String description;
-	String fixAction;
+	private BigInteger id;
+	private String eventName;
+	private String severity;
+	private String description;
+	private String fixAction;
 	
 	
 	
