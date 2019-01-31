@@ -53,12 +53,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "SOLUTION", type = String.class)}) })
 
 @NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "INSERT INTO CostumeEvents (ID, NAME, DEFECT_SEVERITY,COMPERATOR,PERCENT,SEVERITY,ACTION_NAME,DESCRIPTION,SOLUTION)"
-        + " SELECT DE.ID, A.NAME, DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION , 'solution ..'"
+        + " VALUES ((SELECT DE.ID, A.NAME, DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
 		+ " FROM DEFINED_EVENT AS DE" 
 		+ " INNER JOIN APP AS A ON DE.APP = A.ID"
 		+ " INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID"
 		+ " INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID"
-		+ " INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID", resultSetMapping = "CostumeEvents")
+		+ " INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID) , 'solution ..')", resultSetMapping = "CostumeEvents")
 
 
 public class DefinedEvent {
