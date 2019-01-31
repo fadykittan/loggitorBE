@@ -1,9 +1,6 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,17 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
-import com.loggitorBE.loggitorBE.domain.App;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
 import com.loggitorBE.loggitorBE.domain.AppsNames;
 import com.loggitorBE.loggitorBE.domain.DefectSevApi;
-import com.loggitorBE.loggitorBE.domain.DefectSeverity;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
-import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
 @RestController
