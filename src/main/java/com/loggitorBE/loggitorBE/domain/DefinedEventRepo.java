@@ -12,6 +12,5 @@ public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	@Query(nativeQuery = true)
 	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
 	
-	@Query(nativeQuery = true)
-	ArrayList<EventsResult> getEventsResult();
+
 }

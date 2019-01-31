@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Sort;
@@ -20,7 +19,6 @@ import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
-import com.loggitorBE.loggitorBE.domain.EventPagingRepository;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 
 @RestController
@@ -30,9 +28,6 @@ public class LoggitorController {
 
 	@Autowired
 	private DefinedEventRepo eventRepo;
-
-	@Autowired
-	private EventPagingRepository eventPagingRepo;
 
 	@Autowired
 	private EventInstanceRepo eventInsRepo;
@@ -60,10 +55,6 @@ public class LoggitorController {
 		return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
 	}
 	
-	@RequestMapping("/eventsresult")
-	  public ArrayList<EventsResult> geEventsResults() {
-	    return eventRepo.getEventsResult();
-	  }
 	
 	@RequestMapping("/getEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
