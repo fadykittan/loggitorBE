@@ -21,6 +21,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@SqlResultSetMapping(
+		name="CostumeEvents",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=EventsResult.class,
+	            columns={
+	                @ColumnResult(name="ID", type = BigInteger.class),
+	                @ColumnResult(name="NAME", type = String.class),
+	                @ColumnResult(name="DEFECT_SEVERITY", type = String.class),
+	                @ColumnResult(name="COMPERATOR", type = String.class),
+	                @ColumnResult(name="PERCENT", type = int.class),
+	                @ColumnResult(name="SEVERITY", type = String.class),
+	                @ColumnResult(name="ACTION_NAME", type = String.class),
+	                @ColumnResult(name="DESCRIPTION", type = String.class)
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="DefinedEvent.getEventsResult", query="SELECT DE.ID, A.NAME, DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
+		+"FROM DEFINED_EVENT AS DE"
+		+" INNER JOIN APP AS A ON DE.APP=A.ID"
+		+" INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV=DS.ID"
+		+" INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV=ES.ID"
+		+" INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION=FA.ID",resultSetMapping="CostumeEvents")
 public class DefinedEvent {
 
 	@Id

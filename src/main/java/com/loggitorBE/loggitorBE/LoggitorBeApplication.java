@@ -47,7 +47,8 @@ public class LoggitorBeApplication {
 	public static void main(String[] args) throws AddressException, MessagingException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
 		logger.info("Hello Sping Boot!");
-        SMS.msgsend();
+		//String[] to = {"ananghadban@gmail.com"};
+        //Email.sendEmailMessage(to, "test", "hi");
 	}
 
 	@Bean
