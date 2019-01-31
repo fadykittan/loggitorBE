@@ -12,7 +12,7 @@ public class EventsResult {
 	private String eventSeverity;
 	private String actionName;
 	private String description;
-	private String solution;
+	private String solution = "solution..";
 
 	public EventsResult() {
 	}
