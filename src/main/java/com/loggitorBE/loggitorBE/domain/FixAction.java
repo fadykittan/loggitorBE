@@ -3,17 +3,41 @@ package com.loggitorBE.loggitorBE.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+
+// a query that pull the names of actions from the database
+@SqlResultSetMapping(
+		name="ActionsCostume",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=ActionsName.class,
+	            columns={
+	                
+	                @ColumnResult(name="ACTION_NAME", type = String.class)
+	               
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="FixAction.getActionsName", query="SELECT DISTINCT FIX_ACTION.ACTION_NAME"
+		+" FROM FIX_ACTION"
+		+" ORDER BY FIX_ACTION.ACTION_NAME DESC;",resultSetMapping="ActionsCostume")
+
+
 public class FixAction {
 
 	@Id
