@@ -1,18 +1,19 @@
 package com.loggitorBE.loggitorBE.web;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.activation.*;
-import javax.mail.Session;
-import javax.mail.Transport;
-
 import com.loggitorBE.loggitorBE.LoggitorBeApplication;
-import com.sun.mail.util.MailLogger;
 
 public class Email 
 {
