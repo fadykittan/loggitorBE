@@ -31,11 +31,10 @@ import com.loggitorBE.loggitorBE.domain.EventsResult;
 
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
-
 @RestController
 public class LoggitorController {
 
-	//private final static int PAGESIZE = 10;
+	// private final static int PAGESIZE = 10;
 
 	@Autowired
 	private DefinedEventRepo eventRepo;
@@ -43,87 +42,106 @@ public class LoggitorController {
 	@Autowired
 	private EventInstanceRepo eventInsRepo;
 
-	
 	@Autowired
 	private AppRepo appRepo;
-	
+
 	@Autowired
 	private DefectSeverityRepo defRepo;
-	
+
 	@Autowired
 	private FixActionRepo actionRepo;
-	
 
 	@RequestMapping("/events")
 	public Iterable<DefinedEvent> getEvents() {
 		return eventRepo.findAll();
 	}
 
-/*	/// viewEvents?p=1
-	@RequestMapping(value = "/viewEvents", method = RequestMethod.GET)
-	public Iterable<DefinedEvent> viewEvents(@RequestParam(name = "p", defaultValue = "1") int pageNumber) {
-		@SuppressWarnings("deprecation")
-		PageRequest request = new PageRequest(pageNumber - 1, PAGESIZE, Sort.Direction.ASC, "id");
-
-		return eventPagingRepo.findAll(request).getContent();
-	}*/
+	/*
+	 * /// viewEvents?p=1
+	 * 
+	 * @RequestMapping(value = "/viewEvents", method = RequestMethod.GET) public
+	 * Iterable<DefinedEvent> viewEvents(@RequestParam(name = "p", defaultValue =
+	 * "1") int pageNumber) {
+	 * 
+	 * @SuppressWarnings("deprecation") PageRequest request = new
+	 * PageRequest(pageNumber - 1, PAGESIZE, Sort.Direction.ASC, "id");
+	 * 
+	 * return eventPagingRepo.findAll(request).getContent(); }
+	 */
 
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
 	@ResponseBody
-	public ArrayList<EventsResult> getEventsResult(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize, HttpServletRequest req,
-			HttpServletResponse res) throws ServletException {
+	public ArrayList<EventsResult> getEventsResult(@PathVariable("pageNumber") int pageNumber,
+			@PathVariable("pageSize") int pageSize, HttpServletRequest req, HttpServletResponse res)
+			throws ServletException {
 
-		return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
+		if(pageNumber < 1 || pageSize < 1)
+		{
+			return eventRepo.getEventsResult(new PageRequest(0, 999, Sort.Direction.ASC, "id"));
+		}
+		else
+		{
+			return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
+		}
 	}
-	
+
 	@RequestMapping("/getAllEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
 
-		//limit => 999, offset => 0
-		return eventInsRepo.getEventInsTable(date,999,0);
+		// limit => 999, offset => 0
+		return eventInsRepo.getEventInsTable(date, 999, 0);
 	}
 	
 	
-	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date, 
-			@PathVariable("pageSize") int pageSize,
-			@PathVariable("PageNumber") int PageNumber) {
+	
 
-		int limit = pageSize;
-		int offset = PageNumber-1;
-		offset = offset * limit;
-		return eventInsRepo.getEventInsTable(date,limit,offset);
+	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date,
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventInsRepo.getEventInsTable(date, 999, 0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+			return eventInsRepo.getEventInsTable(date, limit, offset);
+		}
 	}
+
 	
-	//calling the method that return the applications names 
+	
+	
+	// calling the method that return the applications names
 	@RequestMapping("/apps")
 	public ArrayList<AppsNames> getAppsNames() {
 		return appRepo.getAppsNames();
 	}
-	//calling the method that return the defect severities
+
+	// calling the method that return the defect severities
 	@RequestMapping("/defectsSeverities")
 	public ArrayList<DefectSevApi> getDefectsSev() {
 		return defRepo.getDefectsSev();
 	}
-	//calling the method that return the actions names
+
+	// calling the method that return the actions names
 	@RequestMapping("/actionsName")
 	public ArrayList<ActionsName> getActionsName() {
 		return actionRepo.getActionsName();
 	}
-	
+
 	// calling the method that create the actions by applications table
 	@RequestMapping("/actionsbyapp")
 	public ArrayList<ActionsByApp> getActionsByApp() {
 		return appRepo.getActionsByApp();
 	}
-	
+
 	// calling the method that create the actions by severities table
 	@RequestMapping("/actionsbyseverity")
 	public ArrayList<ActionsBySeverity> getActionsBySeverity() {
 		return defRepo.getActionsBySeverity();
 
 	}
-	
 
 }
