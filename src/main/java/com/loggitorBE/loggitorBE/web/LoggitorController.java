@@ -85,11 +85,14 @@ public class LoggitorController {
 	}
 	
 	
-	@RequestMapping("/getEventInsTable/{date}/{limit}/{offset}")
+	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date, 
-			@PathVariable("limit") int limit,
-			@PathVariable("offset") int offset) {
+			@PathVariable("pageSize") int pageSize,
+			@PathVariable("PageNumber") int PageNumber) {
 
+		int limit = pageSize;
+		int offset = PageNumber-1;
+		offset = offset * limit;
 		return eventInsRepo.getEventInsTable(date,limit,offset);
 	}
 	
