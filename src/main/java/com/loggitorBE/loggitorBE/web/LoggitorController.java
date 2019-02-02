@@ -77,11 +77,20 @@ public class LoggitorController {
 		return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
 	}
 	
-	
-	@RequestMapping("/getEventInsTable/{date}")
+	@RequestMapping("/getAllEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
 
-		return eventInsRepo.getEventInsTable(date);
+		//limit => 999, offset => 0
+		return eventInsRepo.getEventInsTable(date,999,0);
+	}
+	
+	
+	@RequestMapping("/getEventInsTable/{date}/{limit}/{offset}")
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date, 
+			@PathVariable("limit") int limit,
+			@PathVariable("offset") int offset) {
+
+		return eventInsRepo.getEventInsTable(date,limit,offset);
 	}
 	
 	//calling the method that return the applications names 

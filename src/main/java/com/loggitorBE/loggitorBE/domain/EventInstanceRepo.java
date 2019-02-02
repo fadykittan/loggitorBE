@@ -13,7 +13,9 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 
 	
 	@Query(nativeQuery = true)
-	ArrayList<EventInstanceOnDate> getEventInsTable(@Param("date") String date);
+	ArrayList<EventInstanceOnDate> getEventInsTable(@Param("date") String date,
+			@Param("limit") int limit,
+			@Param("offset") int offset);
 
 	
 }	
