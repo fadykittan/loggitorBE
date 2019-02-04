@@ -1,5 +1,7 @@
 package com.loggitorBE.loggitorBE;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -23,7 +25,6 @@ import com.loggitorBE.loggitorBE.domain.EventSeverity;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
-import com.loggitorBE.loggitorBE.web.Email;
 
 @SpringBootApplication
 public class LoggitorBeApplication {
@@ -42,6 +43,8 @@ public class LoggitorBeApplication {
 	private DefinedEventRepo eve;
 	@Autowired
 	private EventInstanceRepo eveIns;
+	@Autowired
+	private AppRepo t;
 
 	public static void main(String[] args) throws AddressException, MessagingException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
@@ -109,7 +112,8 @@ public class LoggitorBeApplication {
 			ev1.setEventInstance(ei1);
 			ev2.setEventInstance(ei2);
 
-			defSev.save(d1);
+			// disable SAVE
+			/*defSev.save(d1);
 			defSev.save(d2);
 
 			act.save(ac1);
@@ -125,7 +129,22 @@ public class LoggitorBeApplication {
 			eve.save(ev2);
 
 			eveIns.save(ei1);
-			eveIns.save(ei2);
+			eveIns.save(ei2);*/
+			//////////////////////////////
+			
+			List<App> listApp;
+			
+			
+			listApp = t.findByName("FLM");
+			
+			for(App ele: listApp)
+			{
+				System.out.println(ele.getId() + ele.getName());
+			}
+			
+			
+			
+			
 		};
 	}
 
