@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "NAME", type = String.class),
 				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
 				@ColumnResult(name = "COMPERATOR", type = String.class),
-				@ColumnResult(name = "PERCENT", type = int.class),
+				@ColumnResult(name = "PERCENT", type = Float.class),
 				@ColumnResult(name = "SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTION_NAME", type = String.class),
 				@ColumnResult(name = "DESCRIPTION", type = String.class) }) })
@@ -46,7 +46,7 @@ public class DefinedEvent {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	private int percent;
+	private float percent;
 
 	private String comperator;
 	private String name;
@@ -112,11 +112,11 @@ public class DefinedEvent {
 		this.id = id;
 	}
 
-	public int getPercent() {
+	public float getPercent() {
 		return percent;
 	}
 
-	public void setPercent(int percent) {
+	public void setPercent(float percent) {
 		this.percent = percent;
 	}
 
