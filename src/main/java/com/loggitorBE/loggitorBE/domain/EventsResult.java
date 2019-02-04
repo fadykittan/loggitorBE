@@ -8,7 +8,7 @@ public class EventsResult {
 	private String appName;
 	private String defSeverity;
 	private String comperator;
-	private int percent;
+	private float percent;
 	private String eventSeverity;
 	private String actionName;
 	private String description;
@@ -17,7 +17,7 @@ public class EventsResult {
 	public EventsResult() {
 	}
 
-	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, int percent,
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, float percent,
 			String eventSeverity, String actionName, String description) {
 		super();
 		this.id = id;
@@ -30,7 +30,7 @@ public class EventsResult {
 		this.description = description;
 	}
 
-	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, int percent,
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, float percent,
 			String eventSeverity, String actionName, String description, String solution) {
 		super();
 		this.id = id;
@@ -76,11 +76,11 @@ public class EventsResult {
 		this.comperator = comperator;
 	}
 
-	public int getPercent() {
+	public float getPercent() {
 		return percent;
 	}
 
-	public void setPercent(int percent) {
+	public void setPercent(float percent) {
 		this.percent = percent;
 	}
 
