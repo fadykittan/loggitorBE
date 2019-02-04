@@ -62,11 +62,11 @@ public class LoggitorBeApplication {
 			App a1 = new App("BLM", "core");
 			App a2 = new App("CLM", "core");
 
-			EventSeverity e1 = new EventSeverity("critical");
-			EventSeverity e2 = new EventSeverity("error");
+			EventSeverity e1 = new EventSeverity("Critical");
+			EventSeverity e2 = new EventSeverity("Error");
 
-			DefectSeverity d1 = new DefectSeverity("d Critical");
-			DefectSeverity d2 = new DefectSeverity("d error");
+			DefectSeverity d1 = new DefectSeverity("Critical");
+			DefectSeverity d2 = new DefectSeverity("Error");
 
 			FixAction ac1 = new FixAction("SMS");
 			FixAction ac2 = new FixAction("email");

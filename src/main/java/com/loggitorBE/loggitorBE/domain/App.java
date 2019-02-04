@@ -49,17 +49,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	            columns={
 	                
 	                @ColumnResult(name="NAME", type = String.class),
-	                @ColumnResult(name="APP_COUNTER", type = int.class),
-	                @ColumnResult(name="PERCENT", type = double.class)
+	                @ColumnResult(name="TYPE", type = String.class),
+	                @ColumnResult(name="APP_COUNTER", type = Integer.class),
+	                @ColumnResult(name="PERCENT", type = Float.class)
 	                
 	            }
 	        )
 	    }
 	)
 
-@NamedNativeQuery(name="App.getActionsByApp", query="SELECT NAME,COUNT(NAME) AS APP_COUNTER,(COUNT(NAME)*100/(SELECT COUNT(*) FROM APP)) AS PERCENT"
+@NamedNativeQuery(name="App.getActionsByApp", query="SELECT NAME, TYPE, COUNT(NAME) AS APP_COUNTER,(COUNT(NAME)*100/(SELECT COUNT(*) FROM APP)) AS PERCENT"
 		+" FROM APP"
-		+" GROUP BY NAME",resultSetMapping="ActionsByAppCostume")
+		+" GROUP BY NAME, TYPE",resultSetMapping="ActionsByAppCostume")
 		
 public class App {
 
