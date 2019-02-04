@@ -113,7 +113,7 @@ public class LoggitorBeApplication {
 			ev2.setEventInstance(ei2);
 
 			// disable SAVE
-			/*defSev.save(d1);
+			defSev.save(d1);
 			defSev.save(d2);
 
 			act.save(ac1);
@@ -129,7 +129,7 @@ public class LoggitorBeApplication {
 			eve.save(ev2);
 
 			eveIns.save(ei1);
-			eveIns.save(ei2);*/
+			eveIns.save(ei2);
 			//////////////////////////////
 			
 			List<App> listApp;
