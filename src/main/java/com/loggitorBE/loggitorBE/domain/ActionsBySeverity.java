@@ -6,13 +6,13 @@ public class ActionsBySeverity {
 	
 	String Severity;
 	int SevCount;
-	double SevPercentage;
+	float SevPercentage;
 	
 	// default constructor
 	public ActionsBySeverity() {}
 	
 	// constructor
-	public ActionsBySeverity(String severity, int sevCount, double sevPercentage) {
+	public ActionsBySeverity(String severity, int sevCount, float sevPercentage) {
 		super();
 		Severity = severity;
 		SevCount = sevCount;
@@ -35,11 +35,11 @@ public class ActionsBySeverity {
 		SevCount = sevCount;
 	}
 
-	public double getSevPercentage() {
+	public float getSevPercentage() {
 		return SevPercentage;
 	}
 
-	public void setSevPercentage(double sevPercentage) {
+	public void setSevPercentage(float sevPercentage) {
 		SevPercentage = sevPercentage;
 	}
 	

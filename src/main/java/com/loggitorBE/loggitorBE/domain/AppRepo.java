@@ -13,7 +13,7 @@ public interface AppRepo extends CrudRepository<App, Long> {
 	ArrayList<AppsNames> getAppsNames();
 	// declaring a method that create a table that calculate the number and the percentage of the actions by applications
 	@Query(nativeQuery = true)
-	ArrayList<ActionsByApp> getActionsByApp();
+	ArrayList<ActionsByApp> getActionsByApp(String date, int limit, int offset);
 	
 	
 	List<App> findByName(String name);

@@ -11,8 +11,6 @@ public interface DefectSeverityRepo extends CrudRepository<DefectSeverity, Long>
 	@Query(nativeQuery = true)
 	ArrayList<DefectSevApi> getDefectsSev();
 	
-	//declaring a method that create an actions by severity table
-	@Query(nativeQuery = true)
-	ArrayList<ActionsBySeverity> getActionsBySeverity();
+
 
 }
