@@ -13,4 +13,9 @@ public interface EventSeverityRepo extends CrudRepository<EventSeverity, Long> {
 	@Query(nativeQuery = true)
 	ArrayList<ActionsBySeverity> getActionsBySeverity(String date, int limit, int offset);
 
+	
+	// get the event severity list
+	@Query(nativeQuery = true)
+	ArrayList<EventSevList> getEventsSev();
+
 }

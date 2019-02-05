@@ -12,5 +12,6 @@ public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	@Query(nativeQuery = true)
 	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
 	
-
+	@Query(nativeQuery = true)
+	ArrayList<DailyChart> getDailyChart(String date, int limit, int offset);
 }

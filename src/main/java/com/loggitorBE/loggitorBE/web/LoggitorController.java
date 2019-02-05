@@ -19,12 +19,14 @@ import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
 import com.loggitorBE.loggitorBE.domain.AppsNames;
+import com.loggitorBE.loggitorBE.domain.DailyChart;
 import com.loggitorBE.loggitorBE.domain.DefectSevApi;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
+import com.loggitorBE.loggitorBE.domain.EventSevList;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
@@ -161,6 +163,32 @@ public class LoggitorController {
 		return eventSevRepo.getActionsBySeverity(date,limit,offset);
 		}
 
+	}
+	
+	
+	
+	// calling the method to get JSON for Daily chart
+	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventRepo.getDailyChart(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+		return eventRepo.getDailyChart(date,limit,offset);
+		}
+
+	}
+	
+	
+	
+	// calling the method that return the event severities
+	@RequestMapping("/getEventSevList")
+	public ArrayList<EventSevList> getEventsSev() {
+		return eventSevRepo.getEventsSev();
 	}
 
 }
