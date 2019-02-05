@@ -7,13 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.PageRequest;
 
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
@@ -26,9 +25,8 @@ import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
-
+import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
-
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
 @RestController
@@ -46,7 +44,10 @@ public class LoggitorController {
 	private AppRepo appRepo;
 
 	@Autowired
-	private DefectSeverityRepo defRepo;
+	private EventSeverityRepo eventSevRepo;
+	
+	@Autowired
+	private DefectSeverityRepo defSevRepo;
 
 	@Autowired
 	private FixActionRepo actionRepo;
@@ -122,7 +123,7 @@ public class LoggitorController {
 	// calling the method that return the defect severities
 	@RequestMapping("/defectsSeverities")
 	public ArrayList<DefectSevApi> getDefectsSev() {
-		return defRepo.getDefectsSev();
+		return defSevRepo.getDefectsSev();
 	}
 
 	// calling the method that return the actions names
@@ -132,15 +133,33 @@ public class LoggitorController {
 	}
 
 	// calling the method that create the actions by applications table
-	@RequestMapping("/actionsbyapp")
-	public ArrayList<ActionsByApp> getActionsByApp() {
-		return appRepo.getActionsByApp();
+	@RequestMapping("/actionsbyapp/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return appRepo.getActionsByApp(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+			return appRepo.getActionsByApp(date,limit,offset);
+		}
 	}
 
 	// calling the method that create the actions by severities table
-	@RequestMapping("/actionsbyseverity")
-	public ArrayList<ActionsBySeverity> getActionsBySeverity() {
-		return defRepo.getActionsBySeverity();
+	@RequestMapping("/actionsbyseverity/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventSevRepo.getActionsBySeverity(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+		return eventSevRepo.getActionsBySeverity(date,limit,offset);
+		}
 
 	}
 

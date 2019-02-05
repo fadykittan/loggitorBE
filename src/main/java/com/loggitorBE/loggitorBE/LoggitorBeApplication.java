@@ -71,8 +71,8 @@ public class LoggitorBeApplication {
 			FixAction ac1 = new FixAction("SMS");
 			FixAction ac2 = new FixAction("email");
 
-			DefinedEvent ev1 = new DefinedEvent(50, "bigger", "WTF1", "idk1");
-			DefinedEvent ev2 = new DefinedEvent(80, "smaller", "WTF2", "idk2");
+			DefinedEvent ev1 = new DefinedEvent(50, "Greater Than", "WTF1", "idk1");
+			DefinedEvent ev2 = new DefinedEvent(80, "Lower Than", "WTF2", "idk2");
 
 			EventInstance ei1 = new EventInstance("1");
 			EventInstance ei2 = new EventInstance("2");

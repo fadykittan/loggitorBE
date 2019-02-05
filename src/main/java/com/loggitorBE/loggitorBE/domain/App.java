@@ -58,9 +58,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    }
 	)
 
-@NamedNativeQuery(name="App.getActionsByApp", query="SELECT NAME, TYPE, COUNT(NAME) AS APP_COUNTER,(COUNT(NAME)*100/(SELECT COUNT(*) FROM APP)) AS PERCENT"
-		+" FROM APP"
-		+" GROUP BY NAME, TYPE",resultSetMapping="ActionsByAppCostume")
+@NamedNativeQuery(name="App.getActionsByApp", query="SELECT APP.NAME,APP.TYPE,COUNT(DEFINED_EVENT.APP) AS APP_COUNTER,(COUNT(DEFINED_EVENT.APP)*100/(SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= :date)) AS PERCENT " + 
+		"FROM DEFINED_EVENT " + 
+		"INNER JOIN APP ON DEFINED_EVENT.APP=APP.ID " + 
+		"INNER JOIN EVENT_INSTANCE ON DEFINED_EVENT.ID= EVENT_INSTANCE.OCCURRED_EVENT " + 
+		"WHERE EVENT_INSTANCE.DATE= (:date) " + 
+		"GROUP BY DEFINED_EVENT.APP,APP.NAME,APP.TYPE " + 
+		"LIMIT (:limit) OFFSET (:offset) ",resultSetMapping="ActionsByAppCostume")
 		
 public class App {
 
