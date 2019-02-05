@@ -45,6 +45,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"WHERE EVENT_INSTANCE.DATE= (:date) " + 
 		"GROUP BY EVENT_SEVERITY.SEVERITY " + 
 		"LIMIT (:limit) OFFSET (:offset) ",resultSetMapping="ActionsBySeverityCostume")
+
+///////////////////////////////////////SQL for get the events severity list///////////
+@SqlResultSetMapping(
+		name="EventSeverityList",
+	    classes={
+	        @ConstructorResult(
+	        		targetClass=EventSevList.class,
+	            columns={
+	                
+	                @ColumnResult(name="SEVERITY", type = String.class)
+	                
+	            }
+	        )
+	    }
+	)
+
+@NamedNativeQuery(name="EventSeverity.getEventsSev", query="SELECT DISTINCT EVENT_SEVERITY.SEVERITY " + 
+		"FROM EVENT_SEVERITY " + 
+		"ORDER BY EVENT_SEVERITY.SEVERITY DESC",resultSetMapping="EventSeverityList")
+
 public class EventSeverity {
 
 	@Id

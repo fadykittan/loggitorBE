@@ -39,6 +39,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		+ " INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID"
 		+ " INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID"
 		+ " INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID", resultSetMapping = "CostumeEvents")
+///////////////////////// SQL for the chart //////////////////////////
+@SqlResultSetMapping(name = "DailyChart", classes = {
+		@ConstructorResult(targetClass = DailyChart.class, columns = {
+				@ColumnResult(name = "ID", type = BigInteger.class),
+				@ColumnResult(name = "NAME", type = String.class),
+				@ColumnResult(name = "TYPE", type = String.class),
+				@ColumnResult(name = "SEVERITY", type = String.class),
+				@ColumnResult(name = "PERCENT", type = Float.class)
+			 }) })
+
+@NamedNativeQuery(name = "DefinedEvent.getDailyChart", query = "SELECT APP.ID, APP.NAME, APP.TYPE, EVENT_SEVERITY.SEVERITY, " + 
+		"(COUNT(APP.ID)*100 / (SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= :date)) AS PERCENT  " + 
+		"FROM DEFINED_EVENT " + 
+		"INNER JOIN EVENT_INSTANCE ON DEFINED_EVENT.ID=EVENT_INSTANCE.OCCURRED_EVENT " + 
+		"INNER JOIN APP ON DEFINED_EVENT.APP=APP.ID " + 
+		"INNER JOIN EVENT_SEVERITY ON DEFINED_EVENT.EVENT_SEV = EVENT_SEVERITY.ID " + 
+		"WHERE EVENT_INSTANCE.DATE = :date " + 
+		"GROUP BY APP.ID, EVENT_SEVERITY.ID " + 
+		"LIMIT (:limit) OFFSET (:offset) ", resultSetMapping = "DailyChart")
 
 public class DefinedEvent {
 
