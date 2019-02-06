@@ -35,9 +35,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    }
 	)
 
-@NamedNativeQuery(name="App.getAppsNames", query="SELECT DISTINCT APP.NAME"
-		+" FROM APP"
-		+" ORDER BY APP.NAME DESC;",resultSetMapping="AppNamesCostume")
+@NamedNativeQuery(name="App.getAppsNames", query="SELECT DISTINCT CONCAT(APP.NAME,CONCAT('-',APP.TYPE)) AS NAME " + 
+		"FROM APP ",resultSetMapping="AppNamesCostume")
 
 // creating a costume table that counts and calculate the percentage of the actions by applications
 
