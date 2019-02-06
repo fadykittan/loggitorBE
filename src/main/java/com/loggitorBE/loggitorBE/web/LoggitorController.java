@@ -14,9 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +23,6 @@ import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
 import com.loggitorBE.loggitorBE.domain.App;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
-
 import com.loggitorBE.loggitorBE.domain.AppsNames;
 import com.loggitorBE.loggitorBE.domain.DailyChart;
 import com.loggitorBE.loggitorBE.domain.DefectSevApi;
@@ -35,16 +32,11 @@ import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
-
+import com.loggitorBE.loggitorBE.domain.EventSevList;
 import com.loggitorBE.loggitorBE.domain.EventSeverity;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixAction;
-
-import com.loggitorBE.loggitorBE.domain.EventSevList;
-import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
-import com.loggitorBE.loggitorBE.domain.EventsResult;
-
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
 @RestController
@@ -64,7 +56,7 @@ public class LoggitorController {
 	@Autowired
 	private DefectSeverityRepo defRepo;
   
-  @Autowired
+	@Autowired
 	private EventSeverityRepo eventSevRepo;
 
 	@Autowired
@@ -74,8 +66,6 @@ public class LoggitorController {
 	private FixActionRepo actionRepo;
 
 
-	@Autowired
-	private EventSeverityRepo eventSevRepo;
 
 
 	@RequestMapping("/events")
@@ -225,9 +215,6 @@ public class LoggitorController {
 			return false;
 		}
 	}
-
-	@RequestMapping("/getEventInsTable/{date}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
 
 	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date,

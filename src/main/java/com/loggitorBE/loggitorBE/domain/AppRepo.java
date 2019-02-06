@@ -2,7 +2,6 @@ package com.loggitorBE.loggitorBE.domain;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

@@ -2,8 +2,6 @@ package com.loggitorBE.loggitorBE;
 
 
 import java.io.IOException;
-import java.util.List;
-
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -29,9 +27,6 @@ import com.loggitorBE.loggitorBE.domain.EventSeverity;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
-
-import com.loggitorBE.loggitorBE.web.Email;
-import com.loggitorBE.loggitorBE.web.SMS;
 import com.nexmo.client.NexmoClientException;
 
 @SpringBootApplication
@@ -145,15 +140,6 @@ public class LoggitorBeApplication {
 			eveIns.save(ei2);*/
 			//////////////////////////////
 			
-			List<App> listApp;
-			
-			
-			listApp = t.findByName("FLM");
-			
-			for(App ele: listApp)
-			{
-				System.out.println(ele.getId() + ele.getName());
-			}
 			
 			JSONArray api = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/CM/Critical");
 			
