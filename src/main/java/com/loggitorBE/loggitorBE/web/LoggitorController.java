@@ -142,9 +142,10 @@ public class LoggitorController {
 	}
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.PUT)
 	@ResponseBody
-	public boolean updateEvent(@RequestBody EventsResult event)
+	public boolean updateEvent(@RequestBody ArrayList<EventsResult> events)
 	{
 		try {
+			EventsResult event = events.get(0);
 			BigInteger id = event.getId();
 			String appName = event.getAppName();
 			String appType = event.getAppType();
