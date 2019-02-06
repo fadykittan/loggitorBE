@@ -5,6 +5,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +114,7 @@ public class LoggitorBeApplication {
 			ev2.setEventInstance(ei2);
 
 			// disable SAVE
-			defSev.save(d1);
+			/*defSev.save(d1);
 			defSev.save(d2);
 
 			act.save(ac1);
@@ -129,7 +130,7 @@ public class LoggitorBeApplication {
 			eve.save(ev2);
 
 			eveIns.save(ei1);
-			eveIns.save(ei2);
+			eveIns.save(ei2);*/
 			//////////////////////////////
 			
 			List<App> listApp;
@@ -142,10 +143,16 @@ public class LoggitorBeApplication {
 				System.out.println(ele.getId() + ele.getName());
 			}
 			
+			JSONArray api = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/CM/Critical");
 			
+			System.out.println(api.toString());
+			System.out.println(api.getJSONObject(0).get("percentage"));
 			
 			
 		};
 	}
+	
+	
+
 
 }
