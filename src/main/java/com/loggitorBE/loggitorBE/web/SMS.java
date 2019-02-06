@@ -1,12 +1,24 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SMS {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.loggitorBE.loggitorBE.LoggitorBeApplication;
+import com.nexmo.client.NexmoClient;
+import com.nexmo.client.NexmoClientException;
+import com.nexmo.client.sms.SmsSubmissionResponse;
+import com.nexmo.client.sms.SmsSubmissionResponseMessage;
+import com.nexmo.client.sms.messages.TextMessage;
+
+public class SMS {
+	private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplication.class);
+	
 	public static String msgsend() {
 
 		try {
@@ -36,6 +48,21 @@ public class SMS {
 			System.out.println("Error SMS " + e);
 			return "Error " + e;
 		}
+	}
+
+	public static void smsSend() throws IOException, NexmoClientException {
+		NexmoClient client = new NexmoClient.Builder().apiKey("c2d4480c").apiSecret("lzgyKIVeeApqo8YG").build();
+
+		String messageText = "Hello from action system\n";
+	
+		TextMessage message = new TextMessage("ActionSystem", "972525151592", messageText);
+		//TextMessage message = new TextMessage("Action System", "972526840315", messageText);
+		
+		SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);
+		for (SmsSubmissionResponseMessage responseMessage : response.getMessages()) 
+			System.out.println(responseMessage);
+		
+		logger.info("SMS sent successfully.");
 	}
 
 }
