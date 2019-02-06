@@ -112,9 +112,9 @@ public class LoggitorController {
 
 	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean addEvent(@RequestBody ArrayList<EventsResult> events) {
+	public boolean addEvent(@RequestBody EventsResult event) {
 		try {
-			EventsResult event = events.get(0);
+		
 			String appAndType = event.getAppName();
 			int indexStrik = appAndType.indexOf("-");
 			String appName = appAndType.substring(0, indexStrik);
@@ -166,10 +166,10 @@ public class LoggitorController {
 	}
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.PUT)
 	@ResponseBody
-	public boolean updateEvent(@RequestBody ArrayList<EventsResult> events)
+	public boolean updateEvent(@RequestBody EventsResult event)
 	{
 		try {
-			EventsResult event = events.get(0);
+			
 			BigInteger id = event.getId();
 			String appAndType = event.getAppName();
 			int indexStrik = appAndType.indexOf("-");
