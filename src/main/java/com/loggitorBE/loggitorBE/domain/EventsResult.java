@@ -8,41 +8,32 @@ public class EventsResult {
 	private String appName;
 	private String defSeverity;
 	private String comperator;
-	private float percent;
+	private Double percent;
+	private String eventName;
 	private String eventSeverity;
 	private String actionName;
 	private String description;
-	private String solution = "solution..";
+
 
 	public EventsResult() {
 	}
 
-	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, float percent,
-			String eventSeverity, String actionName, String description) {
+
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, Double percent,
+			String eventName,String eventSeverity, String actionName, String description) {
+
 		super();
 		this.id = id;
 		this.appName = appName;
 		this.defSeverity = defSeverity;
 		this.comperator = comperator;
 		this.percent = percent;
+		this.eventName = eventName;
 		this.eventSeverity = eventSeverity;
 		this.actionName = actionName;
 		this.description = description;
 	}
 
-	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, float percent,
-			String eventSeverity, String actionName, String description, String solution) {
-		super();
-		this.id = id;
-		this.appName = appName;
-		this.defSeverity = defSeverity;
-		this.comperator = comperator;
-		this.percent = percent;
-		this.eventSeverity = eventSeverity;
-		this.actionName = actionName;
-		this.description = description;
-		this.solution = solution;
-	}
 
 	public BigInteger getId() {
 		return id;
@@ -59,7 +50,7 @@ public class EventsResult {
 	public void setAppName(String appName) {
 		this.appName = appName;
 	}
-
+	
 	public String getDefSeverity() {
 		return defSeverity;
 	}
@@ -76,12 +67,21 @@ public class EventsResult {
 		this.comperator = comperator;
 	}
 
-	public float getPercent() {
+
+	public Double getPercent() {
 		return percent;
 	}
 
-	public void setPercent(float percent) {
+	public void setPercent(Double percent) {
 		this.percent = percent;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 
 	public String getEventSeverity() {
@@ -106,14 +106,6 @@ public class EventsResult {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getSolution() {
-		return solution;
-	}
-
-	public void setSolution(String solution) {
-		this.solution = solution;
 	}
 
 }

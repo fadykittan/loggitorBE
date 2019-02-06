@@ -63,11 +63,19 @@
 			<version>1.6.2</version>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/com.nexmo/client -->
+		<dependency>
+			<groupId>com.nexmo</groupId>
+			<artifactId>client</artifactId>
+			<version>4.0.1</version>
+
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20180813</version>
+
 		</dependency>
 
 

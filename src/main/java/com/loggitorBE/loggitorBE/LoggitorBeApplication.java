@@ -1,6 +1,9 @@
 package com.loggitorBE.loggitorBE;
 
+
+import java.io.IOException;
 import java.util.List;
+
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -27,6 +30,10 @@ import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
+import com.loggitorBE.loggitorBE.web.Email;
+import com.loggitorBE.loggitorBE.web.SMS;
+import com.nexmo.client.NexmoClientException;
+
 @SpringBootApplication
 public class LoggitorBeApplication {
 
@@ -47,11 +54,14 @@ public class LoggitorBeApplication {
 	@Autowired
 	private AppRepo t;
 
-	public static void main(String[] args) throws AddressException, MessagingException {
+	public static void main(String[] args) throws AddressException, MessagingException, IOException, NexmoClientException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
 		logger.info("Hello Sping Boot!");
 		//String[] to = {"fady.93.fk@gmail.com"};
-        //Email.sendEmailMessage(to, "test", "hi");
+
+      // Email.sendEmailMessage(to, "test", "hi");
+		//SMS.smsSend();
+       //Email.sendEmailMessage(to, "test", "hi");
 	}
 
 	@Bean
@@ -72,8 +82,10 @@ public class LoggitorBeApplication {
 			FixAction ac1 = new FixAction("SMS");
 			FixAction ac2 = new FixAction("email");
 
-			DefinedEvent ev1 = new DefinedEvent(50, "Greater Than", "WTF1", "idk1");
-			DefinedEvent ev2 = new DefinedEvent(80, "Lower Than", "WTF2", "idk2");
+
+			DefinedEvent ev1 = new DefinedEvent(50.0, "Greater Than", "WTF1", "idk1");
+			DefinedEvent ev2 = new DefinedEvent(80.0, "Lower Than", "WTF2", "idk2");
+
 
 			EventInstance ei1 = new EventInstance("1");
 			EventInstance ei2 = new EventInstance("2");
