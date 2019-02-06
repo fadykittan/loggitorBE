@@ -26,14 +26,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		@ConstructorResult(targetClass = EventsResult.class, columns = {
 				@ColumnResult(name = "ID", type = BigInteger.class),
 				@ColumnResult(name = "NAME", type = String.class),
+				@ColumnResult(name = "TYPE", type = String.class),
 				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
 				@ColumnResult(name = "COMPERATOR", type = String.class),
-				@ColumnResult(name = "PERCENT", type = int.class),
+				@ColumnResult(name = "PERCENT", type = Double.class),
+				@ColumnResult(name = "TITLE", type = String.class),
 				@ColumnResult(name = "SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTION_NAME", type = String.class),
 				@ColumnResult(name = "DESCRIPTION", type = String.class) }) })
 
-@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, A.NAME, DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
+@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, A.NAME, A.TYPE, DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
 		+ "FROM DEFINED_EVENT AS DE" 
 		+ " INNER JOIN APP AS A ON DE.APP = A.ID"
 		+ " INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID"
@@ -46,7 +48,7 @@ public class DefinedEvent {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	private int percent;
+	private Double percent;
 
 	private String comperator;
 	private String name;
@@ -81,7 +83,7 @@ public class DefinedEvent {
 	public DefinedEvent() {
 	}
 
-	public DefinedEvent(int percent, String comperator, String name, String description) {
+	public DefinedEvent(Double percent, String comperator, String name, String description) {
 		super();
 		this.percent = percent;
 		this.comperator = comperator;
@@ -89,7 +91,7 @@ public class DefinedEvent {
 		this.description = description;
 	}
 
-	public DefinedEvent(int percent, String comperator, String name, String description, FixAction fixAction,
+	public DefinedEvent(Double percent, String comperator, String name, String description, FixAction fixAction,
 			DefectSeverity defectSev, EventSeverity eventSev, App app, Set<EventInstance> eventInstances) {
 		super();
 		this.percent = percent;
@@ -102,6 +104,21 @@ public class DefinedEvent {
 		this.app = app;
 		this.eventInstances = eventInstances;
 	}
+	
+	
+	public DefinedEvent(Double percent, String comperator, String name, String description, FixAction fixAction,
+			DefectSeverity defectSev, EventSeverity eventSev, App app) {
+		super();
+		this.percent = percent;
+		this.comperator = comperator;
+		this.name = name;
+		this.description = description;
+		this.fixAction = fixAction;
+		this.defectSev = defectSev;
+		this.eventSev = eventSev;
+		this.app = app;
+	}
+	
 
 	// getters and setters
 	public long getId() {
@@ -112,11 +129,11 @@ public class DefinedEvent {
 		this.id = id;
 	}
 
-	public int getPercent() {
+	public Double getPercent() {
 		return percent;
 	}
 
-	public void setPercent(int percent) {
+	public void setPercent(Double percent) {
 		this.percent = percent;
 	}
 
