@@ -5,14 +5,14 @@ public class ActionsByApp {
 	String appName;
 	String appType;
 	int appCount;
-	float percentage;
+	String percentage;
 	
 	
 	// default constructor
 	public ActionsByApp() {}
 
 	// constructor
-	public ActionsByApp(String appName, String appType, int appCount, float percentage) {
+	public ActionsByApp(String appName, String appType, int appCount, String percentage) {
 		super();
 		this.appName = appName;
 		this.appType = appType;
@@ -45,11 +45,11 @@ public class ActionsByApp {
 		this.appCount = appCount;
 	}
 
-	public float getPercentage() {
+	public String getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(float percentage) {
+	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
 	
