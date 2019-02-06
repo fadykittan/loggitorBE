@@ -35,9 +35,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    }
 	)
 
-@NamedNativeQuery(name="App.getAppsNames", query="SELECT DISTINCT APP.NAME"
-		+" FROM APP"
-		+" ORDER BY APP.NAME DESC;",resultSetMapping="AppNamesCostume")
+@NamedNativeQuery(name="App.getAppsNames", query="SELECT DISTINCT CONCAT(APP.NAME,CONCAT('-',APP.TYPE)) AS NAME " + 
+		"FROM APP ",resultSetMapping="AppNamesCostume")
 
 // creating a costume table that counts and calculate the percentage of the actions by applications
 
@@ -49,17 +48,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	            columns={
 	                
 	                @ColumnResult(name="NAME", type = String.class),
-	                @ColumnResult(name="APP_COUNTER", type = int.class),
-	                @ColumnResult(name="PERCENT", type = double.class)
+	                @ColumnResult(name="TYPE", type = String.class),
+	                @ColumnResult(name="APP_COUNTER", type = Integer.class),
+	                @ColumnResult(name="PERCENT", type = String.class)
 	                
 	            }
 	        )
 	    }
 	)
 
-@NamedNativeQuery(name="App.getActionsByApp", query="SELECT NAME,COUNT(NAME) AS APP_COUNTER,(COUNT(NAME)*100/(SELECT COUNT(*) FROM APP)) AS PERCENT"
-		+" FROM APP"
-		+" GROUP BY NAME",resultSetMapping="ActionsByAppCostume")
+@NamedNativeQuery(name="App.getActionsByApp", query="SELECT CONCAT( APP.NAME , CONCAT( '-' , APP.TYPE)) AS NAME , "
+		+ "APP.TYPE , COUNT( DEFINED_EVENT.APP ) AS APP_COUNTER , CONCAT( COUNT( DEFINED_EVENT.APP ) * 100 / (SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= (:date)) ,'%') AS PERCENT " + 
+		"FROM DEFINED_EVENT " + 
+		"INNER JOIN APP ON DEFINED_EVENT.APP=APP.ID " + 
+		"INNER JOIN EVENT_INSTANCE ON DEFINED_EVENT.ID= EVENT_INSTANCE.OCCURRED_EVENT " + 
+		"WHERE EVENT_INSTANCE.DATE= (:date) " + 
+		"GROUP BY DEFINED_EVENT.APP,APP.NAME,APP.TYPE " + 
+		"LIMIT (:limit) OFFSET (:offset) ",resultSetMapping="ActionsByAppCostume")
 		
 public class App {
 

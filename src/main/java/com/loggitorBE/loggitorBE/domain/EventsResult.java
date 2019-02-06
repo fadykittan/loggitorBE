@@ -18,8 +18,10 @@ public class EventsResult {
 	public EventsResult() {
 	}
 
+
 	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, Double percent,
 			String eventName,String eventSeverity, String actionName, String description) {
+
 		super();
 		this.id = id;
 		this.appName = appName;
@@ -64,6 +66,7 @@ public class EventsResult {
 	public void setComperator(String comperator) {
 		this.comperator = comperator;
 	}
+
 
 	public Double getPercent() {
 		return percent;

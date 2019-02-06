@@ -1,10 +1,14 @@
 package com.loggitorBE.loggitorBE;
 
+
 import java.io.IOException;
+import java.util.List;
+
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,7 @@ import com.loggitorBE.loggitorBE.domain.EventSeverity;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
+
 import com.loggitorBE.loggitorBE.web.Email;
 import com.loggitorBE.loggitorBE.web.SMS;
 import com.nexmo.client.NexmoClientException;
@@ -46,13 +51,17 @@ public class LoggitorBeApplication {
 	private DefinedEventRepo eve;
 	@Autowired
 	private EventInstanceRepo eveIns;
+	@Autowired
+	private AppRepo t;
 
 	public static void main(String[] args) throws AddressException, MessagingException, IOException, NexmoClientException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
 		logger.info("Hello Sping Boot!");
 		//String[] to = {"fady.93.fk@gmail.com"};
-       // Email.sendEmailMessage(to, "test", "hi");
+
+      // Email.sendEmailMessage(to, "test", "hi");
 		//SMS.smsSend();
+       //Email.sendEmailMessage(to, "test", "hi");
 	}
 
 	@Bean
@@ -73,8 +82,10 @@ public class LoggitorBeApplication {
 			FixAction ac1 = new FixAction("SMS");
 			FixAction ac2 = new FixAction("email");
 
+
 			DefinedEvent ev1 = new DefinedEvent(50.0, "Greater Than", "WTF1", "idk1");
 			DefinedEvent ev2 = new DefinedEvent(80.0, "Lower Than", "WTF2", "idk2");
+
 
 			EventInstance ei1 = new EventInstance("1");
 			EventInstance ei2 = new EventInstance("2");
@@ -114,7 +125,8 @@ public class LoggitorBeApplication {
 			ev1.setEventInstance(ei1);
 			ev2.setEventInstance(ei2);
 
-			defSev.save(d1);
+			// disable SAVE
+			/*defSev.save(d1);
 			defSev.save(d2);
 
 			act.save(ac1);
@@ -130,8 +142,29 @@ public class LoggitorBeApplication {
 			eve.save(ev2);
 
 			eveIns.save(ei1);
-			eveIns.save(ei2);
+			eveIns.save(ei2);*/
+			//////////////////////////////
+			
+			List<App> listApp;
+			
+			
+			listApp = t.findByName("FLM");
+			
+			for(App ele: listApp)
+			{
+				System.out.println(ele.getId() + ele.getName());
+			}
+			
+			JSONArray api = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/CM/Critical");
+			
+			System.out.println(api.toString());
+			System.out.println(api.getJSONObject(0).get("percentage"));
+			
+			
 		};
 	}
+	
+	
+
 
 }

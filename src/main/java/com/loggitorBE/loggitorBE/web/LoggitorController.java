@@ -9,14 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.PageRequest;
 
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
@@ -25,6 +27,7 @@ import com.loggitorBE.loggitorBE.domain.App;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
 
 import com.loggitorBE.loggitorBE.domain.AppsNames;
+import com.loggitorBE.loggitorBE.domain.DailyChart;
 import com.loggitorBE.loggitorBE.domain.DefectSevApi;
 import com.loggitorBE.loggitorBE.domain.DefectSeverity;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
@@ -32,10 +35,16 @@ import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
+
 import com.loggitorBE.loggitorBE.domain.EventSeverity;
 import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixAction;
+
+import com.loggitorBE.loggitorBE.domain.EventSevList;
+import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
+import com.loggitorBE.loggitorBE.domain.EventsResult;
+
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 
 @RestController
@@ -54,12 +63,20 @@ public class LoggitorController {
 
 	@Autowired
 	private DefectSeverityRepo defRepo;
+  
+  @Autowired
+	private EventSeverityRepo eventSevRepo;
+
+	@Autowired
+	private DefectSeverityRepo defSevRepo;
 
 	@Autowired
 	private FixActionRepo actionRepo;
 
+
 	@Autowired
 	private EventSeverityRepo eventSevRepo;
+
 
 	@RequestMapping("/events")
 	public Iterable<DefinedEvent> getEvents() {
@@ -86,7 +103,21 @@ public class LoggitorController {
 			@PathVariable("pageSize") int pageSize, HttpServletRequest req, HttpServletResponse res)
 			throws ServletException {
 
-		return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
+		if(pageNumber < 1 || pageSize < 1)
+		{
+			return eventRepo.getEventsResult(new PageRequest(0, 999, Sort.Direction.ASC, "id"));
+		}
+		else
+		{
+			return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
+		}
+	}
+
+	@RequestMapping("/getAllEventInsTable/{date}")
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
+
+		// limit => 999, offset => 0
+		return eventInsRepo.getEventInsTable(date, 999, 0);
 	}
 
 	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
@@ -198,7 +229,18 @@ public class LoggitorController {
 	@RequestMapping("/getEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
 
-		return eventInsRepo.getEventInsTable(date);
+	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date,
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventInsRepo.getEventInsTable(date, 999, 0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+			return eventInsRepo.getEventInsTable(date, limit, offset);
+		}
 	}
 
 	// calling the method that return the applications names
@@ -210,7 +252,7 @@ public class LoggitorController {
 	// calling the method that return the defect severities
 	@RequestMapping("/defectsSeverities")
 	public ArrayList<DefectSevApi> getDefectsSev() {
-		return defRepo.getDefectsSev();
+		return defSevRepo.getDefectsSev();
 	}
 
 	// calling the method that return the actions names
@@ -220,16 +262,60 @@ public class LoggitorController {
 	}
 
 	// calling the method that create the actions by applications table
-	@RequestMapping("/actionsbyapp")
-	public ArrayList<ActionsByApp> getActionsByApp() {
-		return appRepo.getActionsByApp();
+	@RequestMapping("/actionsbyapp/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return appRepo.getActionsByApp(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+			return appRepo.getActionsByApp(date,limit,offset);
+		}
 	}
 
 	// calling the method that create the actions by severities table
-	@RequestMapping("/actionsbyseverity")
-	public ArrayList<ActionsBySeverity> getActionsBySeverity() {
-		return defRepo.getActionsBySeverity();
+	@RequestMapping("/actionsbyseverity/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventSevRepo.getActionsBySeverity(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+		return eventSevRepo.getActionsBySeverity(date,limit,offset);
+		}
 
 	}
+
+	
+	// calling the method to get JSON for Daily chart
+	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
+	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") String date, 
+			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+		
+		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+			return eventRepo.getDailyChart(date,999,0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+		return eventRepo.getDailyChart(date,limit,offset);
+		}
+
+	}
+	
+	
+	
+	// calling the method that return the event severities
+	@RequestMapping("/getEventSevList")
+	public ArrayList<EventSevList> getEventsSev() {
+		return eventSevRepo.getEventsSev();
+	}
+
 
 }

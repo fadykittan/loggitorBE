@@ -39,7 +39,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"FROM event_instance, defined_event, event_severity, fix_action " + 
 		"WHERE (event_instance.date = :date) AND (event_instance.occurred_event = defined_event.id) " + 
 		"AND (defined_event.event_sev = event_severity.id) " + 
-		"AND (defined_event.fix_action = fix_action.id)", resultSetMapping="EventOnDateMapping")
+		"AND (defined_event.fix_action = fix_action.id)"
+		+ "LIMIT (:limit) OFFSET (:offset)", resultSetMapping="EventOnDateMapping")
 public class EventInstance {
 
 	@Id
