@@ -51,14 +51,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	                @ColumnResult(name="NAME", type = String.class),
 	                @ColumnResult(name="TYPE", type = String.class),
 	                @ColumnResult(name="APP_COUNTER", type = Integer.class),
-	                @ColumnResult(name="PERCENT", type = Float.class)
+	                @ColumnResult(name="PERCENT", type = String.class)
 	                
 	            }
 	        )
 	    }
 	)
 
-@NamedNativeQuery(name="App.getActionsByApp", query="SELECT APP.NAME,APP.TYPE,COUNT(DEFINED_EVENT.APP) AS APP_COUNTER,(COUNT(DEFINED_EVENT.APP)*100/(SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= :date)) AS PERCENT " + 
+@NamedNativeQuery(name="App.getActionsByApp", query="SELECT CONCAT( APP.NAME , CONCAT( '-' , APP.TYPE)) AS NAME , "
+		+ "APP.TYPE , COUNT( DEFINED_EVENT.APP ) AS APP_COUNTER , CONCAT( COUNT( DEFINED_EVENT.APP ) * 100 / (SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= (:date)) ,'%') AS PERCENT " + 
 		"FROM DEFINED_EVENT " + 
 		"INNER JOIN APP ON DEFINED_EVENT.APP=APP.ID " + 
 		"INNER JOIN EVENT_INSTANCE ON DEFINED_EVENT.ID= EVENT_INSTANCE.OCCURRED_EVENT " + 

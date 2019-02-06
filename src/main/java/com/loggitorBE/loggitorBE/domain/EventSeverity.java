@@ -31,14 +31,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	                
 	                @ColumnResult(name="SEVERITY", type = String.class),
 	                @ColumnResult(name="SEV_COUNTER", type = int.class),
-	                @ColumnResult(name="PERCENT", type = Float.class)
+	                @ColumnResult(name="PERCENT", type = String.class)
 	                
 	            }
 	        )
 	    }
 	)
 
-@NamedNativeQuery(name="EventSeverity.getActionsBySeverity", query="SELECT EVENT_SEVERITY.SEVERITY,COUNT(DEFINED_EVENT.EVENT_SEV) AS SEV_COUNTER,(COUNT(DEFINED_EVENT.EVENT_SEV)*100/(SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= :date)) AS PERCENT " + 
+@NamedNativeQuery(name="EventSeverity.getActionsBySeverity", query="SELECT EVENT_SEVERITY.SEVERITY,COUNT(DEFINED_EVENT.EVENT_SEV) AS SEV_COUNTER,CONCAT((COUNT(DEFINED_EVENT.EVENT_SEV)*100/(SELECT COUNT(*) FROM EVENT_INSTANCE WHERE EVENT_INSTANCE.DATE= (:date) )),'%') AS PERCENT  " + 
 		"FROM DEFINED_EVENT " + 
 		"INNER JOIN EVENT_SEVERITY ON DEFINED_EVENT.EVENT_SEV=EVENT_SEVERITY.ID " + 
 		"INNER JOIN EVENT_INSTANCE ON DEFINED_EVENT.ID=EVENT_INSTANCE.OCCURRED_EVENT " + 
