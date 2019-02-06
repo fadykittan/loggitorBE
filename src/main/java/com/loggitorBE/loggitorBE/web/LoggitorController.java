@@ -91,8 +91,9 @@ public class LoggitorController {
 
 	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean addEvent(@RequestBody EventsResult event) {
+	public boolean addEvent(@RequestBody ArrayList<EventsResult> events) {
 		try {
+			EventsResult event = events.get(0);
 			String appName = event.getAppName();
 			String appType = event.getAppType();
 			String defSeverity = event.getDefSeverity();
