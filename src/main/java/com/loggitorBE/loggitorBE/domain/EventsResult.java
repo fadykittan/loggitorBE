@@ -6,7 +6,6 @@ public class EventsResult {
 
 	private BigInteger id;
 	private String appName;
-	private String appType;
 	private String defSeverity;
 	private String comperator;
 	private Double percent;
@@ -19,12 +18,11 @@ public class EventsResult {
 	public EventsResult() {
 	}
 
-	public EventsResult(BigInteger id, String appName,String appType, String defSeverity, String comperator, Double percent,
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, Double percent,
 			String eventName,String eventSeverity, String actionName, String description) {
 		super();
 		this.id = id;
 		this.appName = appName;
-		this.appType = appType;
 		this.defSeverity = defSeverity;
 		this.comperator = comperator;
 		this.percent = percent;
@@ -51,14 +49,6 @@ public class EventsResult {
 		this.appName = appName;
 	}
 	
-	public String getAppType() {
-		return appType;
-	}
-
-	public void setAppType(String appType) {
-		this.appType = appType;
-	}
-
 	public String getDefSeverity() {
 		return defSeverity;
 	}

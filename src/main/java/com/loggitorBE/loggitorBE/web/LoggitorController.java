@@ -94,8 +94,10 @@ public class LoggitorController {
 	public boolean addEvent(@RequestBody ArrayList<EventsResult> events) {
 		try {
 			EventsResult event = events.get(0);
-			String appName = event.getAppName();
-			String appType = event.getAppType();
+			String appAndType = event.getAppName();
+			int indexStrik = appAndType.indexOf("-");
+			String appName = appAndType.substring(0, indexStrik);
+			String appType = appAndType.substring(indexStrik  + 1 ,appAndType.length()) ;
 			String defSeverity = event.getDefSeverity();
 			String comperator = event.getComperator();
 			Double percent = event.getPercent();
@@ -132,6 +134,7 @@ public class LoggitorController {
 	@ResponseBody
 	public boolean deleteEvent(@PathVariable("eventID") long evenID) {
 		try {
+			
 			eventRepo.deleteById(evenID);
 			return true;
 			
@@ -147,8 +150,10 @@ public class LoggitorController {
 		try {
 			EventsResult event = events.get(0);
 			BigInteger id = event.getId();
-			String appName = event.getAppName();
-			String appType = event.getAppType();
+			String appAndType = event.getAppName();
+			int indexStrik = appAndType.indexOf("-");
+			String appName = appAndType.substring(0, indexStrik);
+			String appType = appAndType.substring(indexStrik  + 1 ,appAndType.length()) ;
 			String defSeverity = event.getDefSeverity();
 			String comperator = event.getComperator();
 			Double percent = event.getPercent();
