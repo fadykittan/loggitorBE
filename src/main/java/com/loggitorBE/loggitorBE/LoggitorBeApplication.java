@@ -1,12 +1,14 @@
 package com.loggitorBE.loggitorBE;
 
-
 import java.io.IOException;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.loggitorBE.loggitorBE.domain.AppRepo;
 import com.loggitorBE.loggitorBE.domain.DefectSeverity;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
+import com.loggitorBE.loggitorBE.domain.DefinedEventPOJO;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
 import com.loggitorBE.loggitorBE.domain.EventInstance;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
@@ -43,20 +46,21 @@ public class LoggitorBeApplication {
 	@Autowired
 	private FixActionRepo act;
 	@Autowired
-	private DefinedEventRepo eve;
+	private DefinedEventRepo DefinedEveRepo;
 	@Autowired
-	private EventInstanceRepo eveIns;
+	private EventInstanceRepo EventInsRepo;
 	@Autowired
 	private AppRepo t;
 
-	public static void main(String[] args) throws AddressException, MessagingException, IOException, NexmoClientException {
+	public static void main(String[] args)
+			throws AddressException, MessagingException, IOException, NexmoClientException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
 		logger.info("Hello Sping Boot!");
-		//String[] to = {"fady.93.fk@gmail.com"};
+		// String[] to = {"fady.93.fk@gmail.com"};
 
-      // Email.sendEmailMessage(to, "test", "hi");
-		//SMS.smsSend();
-       //Email.sendEmailMessage(to, "test", "hi");
+		// Email.sendEmailMessage(to, "test", "hi");
+		// SMS.smsSend();
+		// Email.sendEmailMessage(to, "test", "hi");
 	}
 
 	@Bean
@@ -136,21 +140,70 @@ public class LoggitorBeApplication {
 			eve.save(ev1);
 			eve.save(ev2);
 
-			eveIns.save(ei1);
-			eveIns.save(ei2);*/
+			EventInsRepo.save(ei1);
+			EventInsRepo.save(ei2);*/
 			//////////////////////////////
 			
+			/*
+			 * loop over the defined events and check if events had occurred
+			 */
+			ArrayList<DefinedEventPOJO> allEvents = DefinedEveRepo.getAllDefinedEvent();
+			String app;
+			String severity;
+			int percent;
 			
-			JSONArray api = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/CM/Critical");
+			for (DefinedEventPOJO event: allEvents) {
+				app = event.getApp_name();
+				severity = event.getDef_severity();
+				ReadEventFromDB.getJSONfromURL(app, severity, "");
+				
+				while(ReadEventFromDB.hasNext())
+				{
+					percent = ReadEventFromDB.getNext();
+					
+					switch(event.getComperator().toLowerCase())
+					{
+					case "greater than":
+						if(percent > event.getPercent())
+							insertEventInstance(event.getId());
+					case "lower than":
+						if(percent < event.getPercent())
+							insertEventInstance(event.getId());
+					case "equal":
+						if(percent == event.getPercent())
+							insertEventInstance(event.getId());
+						
+						
+					}
+				}// END of while
+				
+				ReadEventFromDB.close();
+				
+			}// END of for
 			
-			System.out.println(api.toString());
-			System.out.println(api.getJSONObject(0).get("percentage"));
 			
+			
+			//insertEventInstance(new BigInteger("970"));
 			
 		};
 	}
 	
 	
+	
+	
+	
+	
+	/*
+	 * insert event instance with given Defined Event ID
+	 */
+	private void insertEventInstance(BigInteger id)
+	{
+	
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+		DefinedEvent event = DefinedEveRepo.findById(id);
+		EventInstance eventIns = new EventInstance(dateformat.format(Calendar.getInstance().getTime()),event);
+		EventInsRepo.save(eventIns);
 
+	}
 
 }

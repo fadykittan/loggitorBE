@@ -61,7 +61,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"WHERE EVENT_INSTANCE.DATE = :date " + 
 		"GROUP BY APP.ID, EVENT_SEVERITY.ID " + 
 		"LIMIT (:limit) OFFSET (:offset) ", resultSetMapping = "DailyChart")
+/////////////////////////////////////////// SQL getAllDefinedEvent ////////
+@SqlResultSetMapping(name = "AllEventMapping", classes = {
+		@ConstructorResult(targetClass = DefinedEventPOJO.class, columns = {
+				@ColumnResult(name = "ID", type = BigInteger.class),
+				@ColumnResult(name = "COMPERATOR", type = String.class),
+				@ColumnResult(name = "PERCENT", type = Float.class),
+				@ColumnResult(name = "APPID", type = BigInteger.class),
+				@ColumnResult(name = "APPNAME", type = String.class),
+				@ColumnResult(name = "DEFID", type = BigInteger.class),
+				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
+				@ColumnResult(name = "ACTIONID", type = BigInteger.class),
+				@ColumnResult(name = "ACTION_NAME", type = String.class)
+				
+			 }) })
 
+@NamedNativeQuery(name = "DefinedEvent.getAllDefinedEvent", query = "SELECT DEFINED_EVENT.ID, DEFINED_EVENT.COMPERATOR, DEFINED_EVENT.PERCENT, "
+		+ "APP.ID AS APPID, APP.NAME AS APPNAME, APP.TYPE AS APPTYPE, "
+		+ "DEFECT_SEVERITY.ID AS DEFID, DEFECT_SEVERITY.DEFECT_SEVERITY, FIX_ACTION.ID AS ACTIONID, FIX_ACTION.ACTION_NAME " + 
+		"FROM DEFINED_EVENT, APP, DEFECT_SEVERITY, FIX_ACTION " + 
+		"WHERE DEFINED_EVENT.APP = APP.ID " + 
+		"AND DEFINED_EVENT.DEFECT_SEV = DEFECT_SEVERITY.ID " + 
+		"AND DEFINED_EVENT.FIX_ACTION = FIX_ACTION.ID ", resultSetMapping = "AllEventMapping")
 public class DefinedEvent {
 
 	@Id
