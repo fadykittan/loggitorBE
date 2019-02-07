@@ -101,9 +101,19 @@ public class App {
 		this.definedEvents = definedEvents;
 	}
 
+	
 
+	public App(long id, String name, String type) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+	}
 
 	//getters and setters
+
+
+
 
 	public long getId() {
 		return id;

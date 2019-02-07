@@ -9,6 +9,7 @@ import java.util.Calendar;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +39,20 @@ public class LoggitorBeApplication {
 	private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplication.class);
 
 	@Autowired
-	private AppRepo app;
+	private AppRepo appRepo;
 	@Autowired
-	private EventSeverityRepo evSev;
+	private EventSeverityRepo eventSevRepo;
 	@Autowired
-	private DefectSeverityRepo defSev;
+	private DefectSeverityRepo defectSevRepo;
 	@Autowired
-	private FixActionRepo act;
+	private FixActionRepo actionRepo;
 	@Autowired
-	private DefinedEventRepo DefinedEveRepo;
+	private DefinedEventRepo definedEveRepo;
 	@Autowired
-	private EventInstanceRepo EventInsRepo;
-	@Autowired
-	private AppRepo t;
+	private EventInstanceRepo eventInsRepo;
 
+	
+	
 	public static void main(String[] args)
 			throws AddressException, MessagingException, IOException, NexmoClientException {
 		SpringApplication.run(LoggitorBeApplication.class, args);
@@ -67,121 +68,52 @@ public class LoggitorBeApplication {
 	CommandLineRunner runner() {
 		return args -> {
 
-			//eveIns.deleteAll();
-
-			App a1 = new App("BLM", "core");
-			App a2 = new App("CLM", "core");
-
-			EventSeverity e1 = new EventSeverity("Critical");
-			EventSeverity e2 = new EventSeverity("Error");
-
-			DefectSeverity d1 = new DefectSeverity("Critical");
-			DefectSeverity d2 = new DefectSeverity("Error");
-
-			FixAction ac1 = new FixAction("SMS");
-			FixAction ac2 = new FixAction("email");
-
-
-			DefinedEvent ev1 = new DefinedEvent(50.0, "Greater Than", "WTF1", "idk1");
-			DefinedEvent ev2 = new DefinedEvent(80.0, "Lower Than", "WTF2", "idk2");
-
-
-			EventInstance ei1 = new EventInstance("1");
-			EventInstance ei2 = new EventInstance("2");
-
-			/*
-			 * Set<DefinedEvent> l1 = new HashSet<DefinedEvent>(); l1.add(ev1);
-			 * Set<DefinedEvent> l2 = new HashSet<DefinedEvent>(); l2.add(ev2);
-			 */
-
-			ac1.setDefinedEvent(ev1);
-			ac2.setDefinedEvent(ev2);
-
-			d1.setDefinedEvent(ev1);
-			d2.setDefinedEvent(ev2);
-
-			ev1.setFixAction(ac1);
-			ev2.setFixAction(ac2);
-
-			ev1.setDefectSev(d1);
-			ev2.setDefectSev(d2);
-
-			e1.setDefinedEvent(ev1);
-			e2.setDefinedEvent(ev2);
-
-			ev1.setEventSev(e1);
-			ev2.setEventSev(e2);
-
-			a1.setDefinedEvent(ev1);
-			a2.setDefinedEvent(ev2);
-
-			ev1.setApp(a1);
-			ev2.setApp(a2);
-
-			ei1.setOccurredEvent(ev1);
-			ei2.setOccurredEvent(ev2);
-
-			ev1.setEventInstance(ei1);
-			ev2.setEventInstance(ei2);
-
-			// disable SAVE
-			/*defSev.save(d1);
-			defSev.save(d2);
-
-			act.save(ac1);
-			act.save(ac2);
-
-			evSev.save(e1);
-			evSev.save(e2);
-
-			app.save(a1);
-			app.save(a2);
-
-			eve.save(ev1);
-			eve.save(ev2);
-
-			EventInsRepo.save(ei1);
-			EventInsRepo.save(ei2);*/
-			//////////////////////////////
 			
 			/*
-			 * loop over the defined events and check if events had occurred
+			 * init data
 			 */
-			ArrayList<DefinedEventPOJO> allEvents = DefinedEveRepo.getAllDefinedEvent();
-			String app;
-			String severity;
-			int percent;
+			appRepo.save(new App("BLM", "Core"));
+			appRepo.save(new App("BLM", "Custom"));
 			
-			for (DefinedEventPOJO event: allEvents) {
-				app = event.getApp_name();
-				severity = event.getDef_severity();
-				ReadEventFromDB.getJSONfromURL(app, severity, "");
-				
-				while(ReadEventFromDB.hasNext())
-				{
-					percent = ReadEventFromDB.getNext();
-					
-					switch(event.getComperator().toLowerCase())
-					{
-					case "greater than":
-						if(percent > event.getPercent())
-							insertEventInstance(event.getId());
-					case "lower than":
-						if(percent < event.getPercent())
-							insertEventInstance(event.getId());
-					case "equal":
-						if(percent == event.getPercent())
-							insertEventInstance(event.getId());
-						
-						
-					}
-				}// END of while
-				
-				ReadEventFromDB.close();
-				
-			}// END of for
+			appRepo.save(new App("CLM", "Core"));
+			appRepo.save(new App("CLM", "Custom"));
+			
+			appRepo.save(new App("CGN", "Core"));
+			appRepo.save(new App("CGN", "Custom"));
+			
+			appRepo.save(new App("CMN", "Core"));
+			appRepo.save(new App("CMN", "Custom"));
+
+			eventSevRepo.save(new EventSeverity("Error"));
+			eventSevRepo.save(new EventSeverity("Warning"));
+			eventSevRepo.save(new EventSeverity("Critical"));
+			
+			defectSevRepo.save(new DefectSeverity("Error"));
+			defectSevRepo.save(new DefectSeverity("Warning"));
+			defectSevRepo.save(new DefectSeverity("Critical"));
+			
+			actionRepo.save(new FixAction("SMS"));
+			actionRepo.save(new FixAction("Email"));
 			
 			
+			
+			/*
+			 * activate on daily manner
+			 * sleep for certain time
+			 */
+			SimpleDateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+			while(true) {
+				
+				loopOverEvents();
+				
+				System.out.println("Enter Sleep on: " + timeformat.format(Calendar.getInstance().getTime()));
+				Thread.sleep(10*60 * 1000);
+				
+				
+				
+			}
+			
+
 			
 			//insertEventInstance(new BigInteger("970"));
 			
@@ -198,12 +130,57 @@ public class LoggitorBeApplication {
 	 */
 	private void insertEventInstance(BigInteger id)
 	{
-	
+		/************ REMINDER - perform the action *****************/
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-		DefinedEvent event = DefinedEveRepo.findById(id);
+		DefinedEvent event = definedEveRepo.findById(id);
 		EventInstance eventIns = new EventInstance(dateformat.format(Calendar.getInstance().getTime()),event);
-		EventInsRepo.save(eventIns);
+		eventInsRepo.save(eventIns);
 
+	}
+	
+	
+	
+	/*
+	 * loop over the defined events and check if events had occurred
+	 */
+	private void loopOverEvents() throws JSONException, IOException
+	{
+		/*
+		 * loop over the defined events and check if events had occurred
+		 */
+		ArrayList<DefinedEventPOJO> allEvents = definedEveRepo.getAllDefinedEvent();
+		String app;
+		String severity;
+		int percent;
+		
+		for (DefinedEventPOJO event: allEvents) {
+			app = event.getApp_name();
+			severity = event.getDef_severity();
+			ReadEventFromDB.getJSONfromURL(app, severity, "");
+			
+			while(ReadEventFromDB.hasNext())
+			{
+				percent = ReadEventFromDB.getNext();
+				
+				switch(event.getComperator().toLowerCase())
+				{
+				case "greater than":
+					if(percent > event.getPercent())
+						insertEventInstance(event.getId());
+				case "lower than":
+					if(percent < event.getPercent())
+						insertEventInstance(event.getId());
+				case "equal":
+					if(percent == event.getPercent())
+						insertEventInstance(event.getId());
+					
+					
+				}
+			}// END of while
+			
+			ReadEventFromDB.close();
+			
+		}// END of for
 	}
 
 }
