@@ -107,7 +107,7 @@ public class LoggitorBeApplication {
 				loopOverEvents();
 				
 				System.out.println("Enter Sleep on: " + timeformat.format(Calendar.getInstance().getTime()));
-				Thread.sleep(10*60 * 1000);
+				Thread.sleep(60 * 1000);
 				
 				
 				
