@@ -164,9 +164,13 @@ public class LoggitorController {
 			return false;
 		}
 	}
-	@RequestMapping(value = "/updateEvent", method = RequestMethod.PUT)
+	
+	
+	
+	
+	@RequestMapping(value = "/updateEvent/{EVENTID}", method = RequestMethod.PUT)
 	@ResponseBody
-	public boolean updateEvent(@RequestBody EventsResult event)
+	public boolean updateEvent(@PathVariable("EVENTID") long eventId,@RequestBody EventsResult event)
 	{
 		try {
 			
