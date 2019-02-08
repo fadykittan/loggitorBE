@@ -97,6 +97,7 @@ public class LoggitorBeApplication {
 			
 			
 			
+			
 			/*
 			 * activate on daily manner
 			 * sleep for certain time
