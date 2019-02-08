@@ -74,10 +74,10 @@ public class LoggitorBeApplication {
 			 * clean date 
 			 * JUST FOR TEST, NOT a GOOD, THIS A BUG
 			 */
-			appRepo.deleteAll();
+			/*appRepo.deleteAll();
 			eventSevRepo.deleteAll();
 			defectSevRepo.deleteAll();
-			actionRepo.deleteAll();
+			actionRepo.deleteAll();*/
 			
 			
 			
