@@ -69,14 +69,22 @@ public class LoggitorBeApplication {
 		return args -> {
 
 			
+			
 			/*
-			 * init data
+			 * clean date 
+			 * JUST FOR TEST, NOT a GOOD, THIS A BUG
 			 */
 			appRepo.deleteAll();
 			eventSevRepo.deleteAll();
 			defectSevRepo.deleteAll();
 			actionRepo.deleteAll();
 			
+			
+			
+			
+			/*
+			 * init data
+			 */
 			appRepo.save(new App("BLM", "Core"));
 			appRepo.save(new App("BLM", "Custom"));
 			
