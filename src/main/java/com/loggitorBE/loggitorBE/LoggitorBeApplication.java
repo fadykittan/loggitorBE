@@ -105,12 +105,12 @@ public class LoggitorBeApplication {
 			SimpleDateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 			while(true) {
 				
-				loopOverEvents();
+				
 				
 				System.out.println("Enter Sleep on: " + timeformat.format(Calendar.getInstance().getTime()));
-				Thread.sleep(60 * 1000);
+				Thread.sleep(60 * 60 * 1000);
 				
-				
+				loopOverEvents();
 				
 			}
 			
