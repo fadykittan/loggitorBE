@@ -168,7 +168,7 @@ public class LoggitorController {
 	
 	
 	
-	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateEvent", method = RequestMethod.PUT)
 	@ResponseBody
 	public boolean updateEvent(@RequestBody EventsResult event)
 	{
