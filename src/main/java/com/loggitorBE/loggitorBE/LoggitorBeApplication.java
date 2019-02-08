@@ -72,6 +72,11 @@ public class LoggitorBeApplication {
 			/*
 			 * init data
 			 */
+			appRepo.deleteAll();
+			eventSevRepo.deleteAll();
+			defectSevRepo.deleteAll();
+			actionRepo.deleteAll();
+			
 			appRepo.save(new App("BLM", "Core"));
 			appRepo.save(new App("BLM", "Custom"));
 			
@@ -84,6 +89,7 @@ public class LoggitorBeApplication {
 			appRepo.save(new App("CMN", "Core"));
 			appRepo.save(new App("CMN", "Custom"));
 
+			
 			eventSevRepo.save(new EventSeverity("Error"));
 			eventSevRepo.save(new EventSeverity("Warning"));
 			eventSevRepo.save(new EventSeverity("Critical"));
@@ -92,6 +98,7 @@ public class LoggitorBeApplication {
 			defectSevRepo.save(new DefectSeverity("Warning"));
 			defectSevRepo.save(new DefectSeverity("Critical"));
 			
+
 			actionRepo.save(new FixAction("SMS"));
 			actionRepo.save(new FixAction("Email"));
 			
