@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loggitorBE.loggitorBE.admin.domain.UserRepository;
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
@@ -64,6 +65,9 @@ public class LoggitorController {
 
 	@Autowired
 	private FixActionRepo actionRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 
 
 
@@ -126,12 +130,15 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
+			String userName = event.getuserName();
+			String msg = event.getMsg();
 
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
-
+			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -141,7 +148,7 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, action, ds, es, app);
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0), msg, action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
 
@@ -186,12 +193,15 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
+			String userName = event.getuserName();
+			String msg = event.getMsg();
 			
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
-
+			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -200,6 +210,7 @@ public class LoggitorController {
 			ds.setId(defID.get(0).longValue());
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
+			
 	
 			Optional<DefinedEvent> eventToUpdate = eventRepo.findById(id.longValue());
 			eventToUpdate.get().setPercent(percent);
@@ -210,6 +221,8 @@ public class LoggitorController {
 			eventToUpdate.get().setDefectSev(ds);
 			eventToUpdate.get().setEventSev(es);
 			eventToUpdate.get().setApp(app);
+			eventToUpdate.get().setUserId(userID.get(0));
+			eventToUpdate.get().setMsg(msg);
 			
 			eventRepo.save(eventToUpdate.get());
 			return true;

@@ -13,6 +13,8 @@ public class EventsResult {
 	private String eventSeverity;
 	private String actionName;
 	private String description;
+	private String userName;
+	private String msg;
 
 
 	public EventsResult() {
@@ -32,6 +34,27 @@ public class EventsResult {
 		this.eventSeverity = eventSeverity;
 		this.actionName = actionName;
 		this.description = description;
+	}
+
+	
+	
+	
+
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, Double percent,
+			String eventName, String eventSeverity, String actionName, String description, String userName,
+			String msg) {
+		super();
+		this.id = id;
+		this.appName = appName;
+		this.defSeverity = defSeverity;
+		this.comperator = comperator;
+		this.percent = percent;
+		this.eventName = eventName;
+		this.eventSeverity = eventSeverity;
+		this.actionName = actionName;
+		this.description = description;
+		this.userName = userName;
+		this.msg = msg;
 	}
 
 
@@ -108,4 +131,29 @@ public class EventsResult {
 		this.description = description;
 	}
 
+
+	public String getuserName() {
+		return userName;
+	}
+
+
+	public void setuserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public String getMsg() {
+		return msg;
+	}
+
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	
+	
+	
+	
+	
 }

@@ -34,14 +34,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 				@ColumnResult(name = "SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTION_NAME", type = String.class),
-				@ColumnResult(name = "DESCRIPTION", type = String.class) }) })
+				@ColumnResult(name = "DESCRIPTION", type = String.class),
+				@ColumnResult(name = "USERNAME", type = String.class),
+				@ColumnResult(name = "MSG", type = String.class)}) })
 
+@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION, U.EMAIL, DE.MSG " + 
+		"FROM DEFINED_EVENT AS DE " + 
+		"INNER JOIN APP AS A ON DE.APP = A.ID " + 
+		"INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID " + 
+		"INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID " + 
+		"INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID " + 
+		"INNER JOIN USERS AS U ON DE.USER_ID = U.USER_ID ", resultSetMapping = "CostumeEvents")
+
+/*
 @NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
 		+ "FROM DEFINED_EVENT AS DE" 
 		+ " INNER JOIN APP AS A ON DE.APP = A.ID"
 		+ " INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID"
 		+ " INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID"
-		+ " INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID", resultSetMapping = "CostumeEvents")
+		+ " INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID", resultSetMapping = "CostumeEvents")*/
 ///////////////////////// SQL for the chart //////////////////////////
 @SqlResultSetMapping(name = "DailyChart", classes = {
 		@ConstructorResult(targetClass = DailyChart.class, columns = {
@@ -96,6 +107,9 @@ public class DefinedEvent {
 	private String comperator;
 	private String name;
 	private String description;
+	private BigInteger userId;
+	private String msg;
+	
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fixAction")
@@ -162,6 +176,23 @@ public class DefinedEvent {
 		this.app = app;
 	}
 	
+	
+	
+
+	public DefinedEvent(Double percent, String comperator, String name, String description, BigInteger userId,
+			String msg, FixAction fixAction, DefectSeverity defectSev, EventSeverity eventSev, App app) {
+		super();
+		this.percent = percent;
+		this.comperator = comperator;
+		this.name = name;
+		this.description = description;
+		this.userId = userId;
+		this.msg = msg;
+		this.fixAction = fixAction;
+		this.defectSev = defectSev;
+		this.eventSev = eventSev;
+		this.app = app;
+	}
 
 	// getters and setters
 	public long getId() {
@@ -248,5 +279,26 @@ public class DefinedEvent {
 	public void setEventInstance(EventInstance eventInstance) {
 		this.eventInstances.add(eventInstance);
 	}
+
+	public BigInteger getUserId() {
+		return userId;
+	}
+
+	public void setUserId(BigInteger userId) {
+		this.userId = userId;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	
+	
+	
+	
+	
 
 }

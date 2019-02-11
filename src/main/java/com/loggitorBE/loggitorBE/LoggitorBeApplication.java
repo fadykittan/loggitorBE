@@ -18,6 +18,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.loggitorBE.loggitorBE.admin.domain.UserRepository;
+import com.loggitorBE.loggitorBE.admin.domain.Users;
 import com.loggitorBE.loggitorBE.domain.App;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
 import com.loggitorBE.loggitorBE.domain.DefectSeverity;
@@ -51,7 +53,8 @@ public class LoggitorBeApplication {
 	@Autowired
 	private EventInstanceRepo eventInsRepo;
 
-	
+	@Autowired
+	private UserRepository userRepo;
 	
 	public static void main(String[] args)
 			throws AddressException, MessagingException, IOException, NexmoClientException {
@@ -110,8 +113,11 @@ public class LoggitorBeApplication {
 			actionRepo.save(new FixAction("SMS"));
 			actionRepo.save(new FixAction("Email"));
 			
+			Users user = new Users("abo", "email1", "0001", "0000", "yes");
+			Users userrr = new Users("abo11", "email1111", "000122", "000022", "no");
 			
-			
+			userRepo.save(user);
+			userRepo.save(userrr);
 			
 			/*
 			 * activate on daily manner
