@@ -1,6 +1,5 @@
 package com.loggitorBE.loggitorBE.admin.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +12,7 @@ public class Users {
 	   @GeneratedValue(strategy=GenerationType.AUTO)
 	   private long UserId;
 	   private String Name;
-	   @Column(unique=true)
+	   //@Column(unique=true)
 	   private String Email;
 	   private String Phone;
 	   private String Password;

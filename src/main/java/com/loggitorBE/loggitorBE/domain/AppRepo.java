@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.domain;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,7 @@ public interface AppRepo extends CrudRepository<App, Long> {
 
   // declaring a method that create a table that calculate the number and the percentage of the actions by applications
 	@Query(nativeQuery = true)
-	ArrayList<ActionsByApp> getActionsByApp(String date, int limit, int offset);
+	ArrayList<ActionsByApp> getActionsByApp(Date date, int limit, int offset);
 	
 	
 	//List<App> findByName(String name);

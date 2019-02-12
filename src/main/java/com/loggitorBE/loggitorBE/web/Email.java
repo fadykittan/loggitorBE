@@ -22,6 +22,15 @@ public class Email
 	private static String fromUser = "loggitor.action.system";// just the id alone without @gmail.com
 	private static String fromUserEmailPassword = "0123action";
 	
+	
+	public static void sendEmailMessage(String toEmail,String emailSubject,String emailBody) throws AddressException, MessagingException
+	{
+		String[] email = new String[1];
+		email[0] = toEmail;
+		sendEmailMessage(email,emailSubject,emailBody);
+	}
+	
+	
 	public static void sendEmailMessage(String[] toEmails,String emailSubject,String emailBody) throws AddressException, MessagingException {
 		Session mailSession;
 		MimeMessage emailMessage;

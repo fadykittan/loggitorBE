@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -43,7 +44,6 @@ import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 @RestController
 public class LoggitorController {
 
-	// private final static int PAGESIZE = 10;
 
 	@Autowired
 	private DefinedEventRepo eventRepo;
@@ -77,19 +77,7 @@ public class LoggitorController {
 		return eventRepo.findAll();
 	}
 
-	/*
-	 * /// viewEvents?p=1
-	 * 
-	 * @RequestMapping(value = "/viewEvents", method = RequestMethod.GET) public
-	 * Iterable<DefinedEvent> viewEvents(@RequestParam(name = "p", defaultValue =
-	 * "1") int pageNumber) {
-	 * 
-	 * @SuppressWarnings("deprecation") PageRequest request = new
-	 * PageRequest(pageNumber - 1, PAGESIZE, Sort.Direction.ASC, "id");
-	 * 
-	 * return eventPagingRepo.findAll(request).getContent(); }
-	 */
-
+	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
 	@ResponseBody
@@ -108,7 +96,7 @@ public class LoggitorController {
 	}
 
 	@RequestMapping("/getAllEventInsTable/{date}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable Date date) {
 
 		// limit => 999, offset => 0
 		return eventInsRepo.getEventInsTable(date, 999, 0);
@@ -234,10 +222,10 @@ public class LoggitorController {
 	}
 
 	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date,
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") Date date,
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventInsRepo.getEventInsTable(date, 999, 0);
 		} else {
 			int limit = pageSize;
@@ -267,10 +255,10 @@ public class LoggitorController {
 
 	// calling the method that create the actions by applications table
 	@RequestMapping("/actionsbyapp/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") String date, 
+	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return appRepo.getActionsByApp(date,999,0);
 		} else {
 			int limit = pageSize;
@@ -282,10 +270,10 @@ public class LoggitorController {
 
 	// calling the method that create the actions by severities table
 	@RequestMapping("/actionsbyseverity/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") String date, 
+	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventSevRepo.getActionsBySeverity(date,999,0);
 		} else {
 			int limit = pageSize;
@@ -299,10 +287,10 @@ public class LoggitorController {
 	
 	// calling the method to get JSON for Daily chart
 	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") String date, 
+	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventRepo.getDailyChart(date,999,0);
 		} else {
 			int limit = pageSize;

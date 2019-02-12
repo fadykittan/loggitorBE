@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.domain;
 
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 
 	
 	@Query(nativeQuery = true)
-	ArrayList<EventInstanceOnDate> getEventInsTable(@Param("date") String date,
+	ArrayList<EventInstanceOnDate> getEventInsTable(@Param("date") Date date,
 			@Param("limit") int limit,
 			@Param("offset") int offset);
 

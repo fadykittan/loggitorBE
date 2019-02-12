@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "USERNAME", type = String.class),
 				@ColumnResult(name = "MSG", type = String.class)}) })
 
-@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION, U.EMAIL, DE.MSG " + 
+@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION, U.EMAIL AS USERNAME, DE.MSG " + 
 		"FROM DEFINED_EVENT AS DE " + 
 		"INNER JOIN APP AS A ON DE.APP = A.ID " + 
 		"INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID " + 

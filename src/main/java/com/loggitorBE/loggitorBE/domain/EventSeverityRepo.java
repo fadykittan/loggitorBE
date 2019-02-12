@@ -3,7 +3,7 @@ package com.loggitorBE.loggitorBE.domain;
 
 
 import java.math.BigInteger;
-
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +18,7 @@ public interface EventSeverityRepo extends CrudRepository<EventSeverity, Long> {
 
 	//declaring a method that create an actions by severity table
 	@Query(nativeQuery = true)
-	ArrayList<ActionsBySeverity> getActionsBySeverity(String date, int limit, int offset);
+	ArrayList<ActionsBySeverity> getActionsBySeverity(Date date, int limit, int offset);
 
 	
 	// get the event severity list
