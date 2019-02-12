@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loggitorBE.loggitorBE.admin.domain.UserRepository;
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
@@ -42,7 +44,6 @@ import com.loggitorBE.loggitorBE.domain.FixActionRepo;
 @RestController
 public class LoggitorController {
 
-	// private final static int PAGESIZE = 10;
 
 	@Autowired
 	private DefinedEventRepo eventRepo;
@@ -64,6 +65,9 @@ public class LoggitorController {
 
 	@Autowired
 	private FixActionRepo actionRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 
 
 
@@ -73,19 +77,7 @@ public class LoggitorController {
 		return eventRepo.findAll();
 	}
 
-	/*
-	 * /// viewEvents?p=1
-	 * 
-	 * @RequestMapping(value = "/viewEvents", method = RequestMethod.GET) public
-	 * Iterable<DefinedEvent> viewEvents(@RequestParam(name = "p", defaultValue =
-	 * "1") int pageNumber) {
-	 * 
-	 * @SuppressWarnings("deprecation") PageRequest request = new
-	 * PageRequest(pageNumber - 1, PAGESIZE, Sort.Direction.ASC, "id");
-	 * 
-	 * return eventPagingRepo.findAll(request).getContent(); }
-	 */
-
+	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
 	@ResponseBody
@@ -104,7 +96,7 @@ public class LoggitorController {
 	}
 
 	@RequestMapping("/getAllEventInsTable/{date}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable String date) {
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable Date date) {
 
 		// limit => 999, offset => 0
 		return eventInsRepo.getEventInsTable(date, 999, 0);
@@ -126,12 +118,15 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
+			String userName = event.getuserName();
+			String msg = event.getMsg();
 
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
-
+			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -141,7 +136,7 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, action, ds, es, app);
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0), msg, action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
 
@@ -186,12 +181,15 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
+			String userName = event.getuserName();
+			String msg = event.getMsg();
 			
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
-
+			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -200,6 +198,7 @@ public class LoggitorController {
 			ds.setId(defID.get(0).longValue());
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
+			
 	
 			Optional<DefinedEvent> eventToUpdate = eventRepo.findById(id.longValue());
 			eventToUpdate.get().setPercent(percent);
@@ -210,6 +209,8 @@ public class LoggitorController {
 			eventToUpdate.get().setDefectSev(ds);
 			eventToUpdate.get().setEventSev(es);
 			eventToUpdate.get().setApp(app);
+			eventToUpdate.get().setUserId(userID.get(0));
+			eventToUpdate.get().setMsg(msg);
 			
 			eventRepo.save(eventToUpdate.get());
 			return true;
@@ -221,10 +222,10 @@ public class LoggitorController {
 	}
 
 	@RequestMapping("/getEventInsTable/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") String date,
+	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable("date") Date date,
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventInsRepo.getEventInsTable(date, 999, 0);
 		} else {
 			int limit = pageSize;
@@ -254,10 +255,10 @@ public class LoggitorController {
 
 	// calling the method that create the actions by applications table
 	@RequestMapping("/actionsbyapp/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") String date, 
+	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return appRepo.getActionsByApp(date,999,0);
 		} else {
 			int limit = pageSize;
@@ -269,10 +270,10 @@ public class LoggitorController {
 
 	// calling the method that create the actions by severities table
 	@RequestMapping("/actionsbyseverity/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") String date, 
+	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventSevRepo.getActionsBySeverity(date,999,0);
 		} else {
 			int limit = pageSize;
@@ -286,10 +287,10 @@ public class LoggitorController {
 	
 	// calling the method to get JSON for Daily chart
 	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") String date, 
+	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
 		
-		if (Integer.parseInt(date) < 1 || pageSize < 1 || pageNumber < 1) {
+		if (pageSize < 1 || pageNumber < 1) {
 			return eventRepo.getDailyChart(date,999,0);
 		} else {
 			int limit = pageSize;

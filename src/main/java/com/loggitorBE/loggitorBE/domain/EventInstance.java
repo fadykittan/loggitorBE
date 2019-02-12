@@ -2,6 +2,7 @@ package com.loggitorBE.loggitorBE.domain;
 
 
 import java.math.BigInteger;
+import java.sql.Date;
 
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -46,7 +47,7 @@ public class EventInstance {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-	private String date;
+	private Date date;
 
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -59,12 +60,12 @@ public class EventInstance {
 
 
 
-	public EventInstance(String date) {
+	public EventInstance(Date date) {
 		super();
 		this.date = date;
 	}
 
-	public EventInstance(String date, DefinedEvent occurredEvent) {
+	public EventInstance(Date date, DefinedEvent occurredEvent) {
 		super();
 		this.date = date;
 		this.occurredEvent = occurredEvent;
@@ -85,13 +86,13 @@ public class EventInstance {
 
 
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
 
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
