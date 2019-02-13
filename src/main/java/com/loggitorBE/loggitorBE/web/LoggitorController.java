@@ -1,14 +1,18 @@
 package com.loggitorBE.loggitorBE.web;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,6 +44,7 @@ import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
+import com.nexmo.client.NexmoClientException;
 
 @RestController
 public class LoggitorController {
@@ -310,4 +315,19 @@ public class LoggitorController {
 	}
 
 
+	
+	/*
+	 * check the event in db and adding event instances
+	 * using SysTools class
+	 */
+	@RequestMapping("/runActionSys")
+	public void runActionSys() throws AddressException, JSONException, IOException, MessagingException, NexmoClientException {
+		System.out.println("Checking Events Starts");
+		SysTools mytools = new SysTools(eventRepo,eventInsRepo);
+		mytools.loopOverEvents();
+		System.out.println("Checking Events Ended");
+	}
+	
+	
+	
 }
