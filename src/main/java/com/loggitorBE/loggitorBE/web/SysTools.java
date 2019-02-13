@@ -106,8 +106,8 @@ public class SysTools {
 		else if(action.equals("SMS"))
 		{
 			String phone = definedEveRepo.findPhoneById(id);
-			SMS.smsSend();
-			
+			//"972525151592"
+			SMS.smsSend(msg,phone);
 		}
 		
 		/************ action ends *****************/
@@ -121,8 +121,5 @@ public class SysTools {
 		Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 		EventInstance eventIns = new EventInstance(sqlDate,event);
 		eventInsRepo.save(eventIns);
-
 	}
-	
-	
 }

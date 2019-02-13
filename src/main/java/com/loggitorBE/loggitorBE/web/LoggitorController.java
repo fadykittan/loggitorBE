@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -31,6 +33,7 @@ import com.loggitorBE.loggitorBE.domain.App;
 import com.loggitorBE.loggitorBE.domain.AppRepo;
 import com.loggitorBE.loggitorBE.domain.AppsNames;
 import com.loggitorBE.loggitorBE.domain.DailyChart;
+import com.loggitorBE.loggitorBE.domain.DailyChartReturned;
 import com.loggitorBE.loggitorBE.domain.DefectSevApi;
 import com.loggitorBE.loggitorBE.domain.DefectSeverity;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
@@ -141,7 +144,7 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0), msg, action, ds, es, app);
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0).longValue(), msg, action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
 
@@ -214,7 +217,7 @@ public class LoggitorController {
 			eventToUpdate.get().setDefectSev(ds);
 			eventToUpdate.get().setEventSev(es);
 			eventToUpdate.get().setApp(app);
-			eventToUpdate.get().setUserId(userID.get(0));
+			eventToUpdate.get().setUserId(userID.get(0).longValue());
 			eventToUpdate.get().setMsg(msg);
 			
 			eventRepo.save(eventToUpdate.get());
@@ -290,10 +293,115 @@ public class LoggitorController {
 	}
 
 	
-	// calling the method to get JSON for Daily chart
+	
+	
+	
+	/*
+	 * calling the method to get JSON for Daily chart
+	 */
 	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<DailyChart> getDailyChart(@PathVariable("date") Date date, 
+	private ArrayList<DailyChartReturned> getDailyChartReturned(@PathVariable("date") Date date, 
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
+	
+		String fullName;
+		float[] floatArr;
+		ArrayList<DailyChart> arr = getDailyChart(date,pageSize,pageNumber);
+		
+		
+		/*
+		 * index 0 -> cri
+		 * index 1 -> war
+		 * index 2 -> err
+		 * 
+		 * map to sort the values
+		 */
+		HashMap<String, float[]> tempMap= new HashMap<>();
+		
+		// iterate over Daily chart arrayList
+		for(DailyChart d: arr)
+		{
+			fullName = d.getName() + "-" + d.getType();
+			if(tempMap.get(fullName) != null)
+			{
+				// if the key exists in the map
+				switch (d.getSeverity())
+				{
+				case "Critical":
+					tempMap.get(fullName)[0] = d.getPercent();
+					break;
+					
+				case "Warning":
+					tempMap.get(fullName)[1] = d.getPercent();
+					break;
+					
+				case "Error":
+					tempMap.get(fullName)[2] = d.getPercent();
+					break;
+				}
+				
+			}
+			else
+			{
+				floatArr = new float[3];
+				floatArr[0] = 0;
+				floatArr[1] = 0;
+				floatArr[2] = 0;
+				
+				switch (d.getSeverity())
+				{
+				case "Critical":
+					floatArr[0] = d.getPercent();
+					break;
+					
+				case "Warning":
+					floatArr[1] = d.getPercent();
+					break;
+					
+				case "Error":
+					floatArr[2] = d.getPercent();
+					break;
+				}
+				
+				tempMap.put(fullName, floatArr);
+			}
+			
+			floatArr = null;
+			fullName = null;
+
+		}
+		
+		
+		// returned result
+		ArrayList<DailyChartReturned> result = new ArrayList<>();
+		
+		// get keys entry as set
+		Set<HashMap.Entry<String, float[]>> setRes = tempMap.entrySet();
+		
+		// iterate over the entry set
+		for(HashMap.Entry<String, float[]> entry: setRes)
+		{
+			result.add(new DailyChartReturned(entry.getKey(), 
+					entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]));
+		}
+		
+		
+		return result;
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 *  DailyChart method for getDailyChart API
+	 */
+	private ArrayList<DailyChart> getDailyChart(Date date, 
+			int pageSize, int pageNumber) {
+		
 		
 		if (pageSize < 1 || pageNumber < 1) {
 			return eventRepo.getDailyChart(date,999,0);
@@ -301,8 +409,10 @@ public class LoggitorController {
 			int limit = pageSize;
 			int offset = pageNumber - 1;
 			offset = offset * limit;
-		return eventRepo.getDailyChart(date,limit,offset);
+			return eventRepo.getDailyChart(date,limit,offset);
+			
 		}
+		
 
 	}
 	
