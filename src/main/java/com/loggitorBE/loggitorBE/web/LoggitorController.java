@@ -39,6 +39,7 @@ import com.loggitorBE.loggitorBE.domain.DefectSeverity;
 import com.loggitorBE.loggitorBE.domain.DefectSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventRepo;
+import com.loggitorBE.loggitorBE.domain.EventInstance;
 import com.loggitorBE.loggitorBE.domain.EventInstanceOnDate;
 import com.loggitorBE.loggitorBE.domain.EventInstanceRepo;
 import com.loggitorBE.loggitorBE.domain.EventSevList;
@@ -158,6 +159,13 @@ public class LoggitorController {
 	@ResponseBody
 	public boolean deleteEvent(@PathVariable("eventID") long evenID) {
 		try {
+			
+			ArrayList<EventInstance> eventIns = eventInsRepo.getEveInsByDefinedEveId(evenID);
+			
+			for(EventInstance i: eventIns)
+			{
+				eventInsRepo.deleteById(i.getId());
+			}
 			
 			eventRepo.deleteById(evenID);
 			return true;
