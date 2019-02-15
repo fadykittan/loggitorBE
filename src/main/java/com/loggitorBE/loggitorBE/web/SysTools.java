@@ -9,8 +9,10 @@ import java.util.Calendar;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.loggitorBE.loggitorBE.JsonReader;
 import com.loggitorBE.loggitorBE.ReadEventFromDB;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventPOJO;
@@ -58,7 +60,9 @@ public class SysTools {
 		for (DefinedEventPOJO event: allEvents) {
 			app = event.getApp_name();
 			severity = event.getDef_severity();
-			ReadEventFromDB.getJSONfromURL(app, severity, "");
+			Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
+			System.out.println(sqlDate.toString());
+			ReadEventFromDB.getJSONfromURL(app, severity, sqlDate);
 			
 			while(ReadEventFromDB.hasNext())
 			{
@@ -118,8 +122,35 @@ public class SysTools {
 			System.out.println("ID Does not exist");
 			return;
 		}
+		
 		Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 		EventInstance eventIns = new EventInstance(sqlDate,event);
 		eventInsRepo.save(eventIns);
 	}
+	
+	
+	
+	
+	/*
+	 * get user ID
+	 *
+	private static JSONArray jsonArr;
+	private static int i=0;
+	private static String baseUrl = "https://amdocstask.herokuapp.com/SeverityAppPercent/";
+	
+	public static void getJSONfromURL(String app, String severity, Date date) throws JSONException, IOException
+	{
+		System.out.println(date.toString());
+		String url = baseUrl + app + "/" + severity + "/" + date;
+		jsonArr = JsonReader.readJsonFromUrl(url);
+		i = 0;
+
+	}
+	
+	*/
+	
+	
+	
+	
+	
 }
