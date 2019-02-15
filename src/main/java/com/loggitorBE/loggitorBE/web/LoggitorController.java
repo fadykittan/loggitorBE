@@ -134,6 +134,7 @@ public class LoggitorController {
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
+			/////////////////////////////////////////////////
 			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
 			
 			App app = new App(appName, appType);

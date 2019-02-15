@@ -25,7 +25,13 @@ public class ReadEventFromDB {
 	public static int getNext()
 	{
 		int p;
-		p = jsonArr.getJSONObject(i).getInt("percentage");
+		String strP;
+		strP = jsonArr.getJSONObject(i).getString("percentage");
+		strP = strP.substring(0, strP.indexOf("%"));
+
+		// convert to int
+		p = (int)Float.parseFloat(strP);
+
 		i++;
 		return p;
 	}

@@ -9,10 +9,8 @@ import java.util.Calendar;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.loggitorBE.loggitorBE.JsonReader;
 import com.loggitorBE.loggitorBE.ReadEventFromDB;
 import com.loggitorBE.loggitorBE.domain.DefinedEvent;
 import com.loggitorBE.loggitorBE.domain.DefinedEventPOJO;
@@ -129,27 +127,7 @@ public class SysTools {
 	}
 	
 	
-	
-	
-	/*
-	 * get user ID
-	 *
-	private static JSONArray jsonArr;
-	private static int i=0;
-	private static String baseUrl = "https://amdocstask.herokuapp.com/SeverityAppPercent/";
-	
-	public static void getJSONfromURL(String app, String severity, Date date) throws JSONException, IOException
-	{
-		System.out.println(date.toString());
-		String url = baseUrl + app + "/" + severity + "/" + date;
-		jsonArr = JsonReader.readJsonFromUrl(url);
-		i = 0;
 
-	}
-	
-	*/
-	
-	
 	
 	
 	
