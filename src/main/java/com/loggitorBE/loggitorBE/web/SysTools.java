@@ -53,7 +53,7 @@ public class SysTools {
 		ArrayList<DefinedEventPOJO> allEvents = definedEveRepo.getAllDefinedEvent();
 		String app;
 		String severity;
-		int percent;
+		float percent;
 		
 		for (DefinedEventPOJO event: allEvents) {
 			app = event.getApp_name();
