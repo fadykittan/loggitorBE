@@ -458,4 +458,11 @@ public class LoggitorController {
 	
 	
 	
+	
+	@RequestMapping("/countEventIns")
+	public int countEventIns() {
+		return eventInsRepo.countEventIns();
+	}
+	
+	
 }

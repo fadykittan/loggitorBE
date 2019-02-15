@@ -25,4 +25,11 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 	ArrayList<EventInstance> getEveInsByDefinedEveId(@Param("DefinedEventId") long date);
 
 	
+	
+	@Query(value = "SELECT COUNT(*) FROM event_instance", nativeQuery = true)
+	int countEventIns();
+	
+	
+	
+	
 }	
