@@ -45,4 +45,7 @@ public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	String findPhoneById(BigInteger id);
 	
 	
+	@Query(value = "SELECT COUNT(*) FROM defined_event", nativeQuery = true)
+	int countDefinedEve();
+	
 }
