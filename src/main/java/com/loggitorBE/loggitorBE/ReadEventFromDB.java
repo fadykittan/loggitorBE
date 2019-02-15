@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,8 +12,9 @@ public class ReadEventFromDB {
 	private static int i=0;
 	private static String baseUrl = "https://amdocstask.herokuapp.com/SeverityAppPercent/";
 	
-	public static void getJSONfromURL(String app, String severity, String date) throws JSONException, IOException
+	public static void getJSONfromURL(String app, String severity, Date date) throws JSONException, IOException
 	{
+		System.out.println(date.toString());
 		String url = baseUrl + app + "/" + severity + "/" + date;
 		jsonArr = JsonReader.readJsonFromUrl(url);
 		i = 0;
