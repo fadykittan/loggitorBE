@@ -448,4 +448,13 @@ public class LoggitorController {
 	
 	
 	
+	
+	
+	@RequestMapping("/countDefinedEvent")
+	public int countDefinedEvent() {
+		return eventRepo.countDefinedEve();
+	}
+	
+	
+	
 }
