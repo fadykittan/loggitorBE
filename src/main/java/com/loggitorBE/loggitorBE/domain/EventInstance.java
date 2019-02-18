@@ -42,6 +42,68 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"AND (defined_event.event_sev = event_severity.id) " + 
 		"AND (defined_event.fix_action = fix_action.id)"
 		+ "LIMIT (:limit) OFFSET (:offset)", resultSetMapping="EventOnDateMapping")
+
+/////////////////////////////////////////////////Weekly diagram queries/////////////////////////////////////////////////////////
+@SqlResultSetMapping(
+name="WeeklyWarning",
+classes={
+@ConstructorResult(
+targetClass=WeeklyDiagram.class,
+columns={
+@ColumnResult(name="WARNING", type = int.class)
+}
+)
+}
+)
+
+@NamedNativeQuery(name="EventInstance.getWeeklyWarning", query="SELECT count(EI.ID) AS WARNING"
++" FROM DEFINED_EVENT AS DE"
++" INNER JOIN EVENT_INSTANCE AS EI ON DE.ID=EI.OCCURRED_EVENT"
++" INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV=ES.ID"
++" WHERE ES.SEVERITY='Warning'"
++" GROUP BY date_trunc('week', date)"
++" ORDER BY date_trunc('week', date) DESC", resultSetMapping="WeeklyWarning")
+
+@SqlResultSetMapping(
+name="WeeklyCritical",
+classes={
+@ConstructorResult(
+targetClass=WeeklyDiagram.class,
+columns={
+@ColumnResult(name="CRITICAL", type = int.class)
+}
+)
+}
+)
+
+@NamedNativeQuery(name="EventInstance.getWeeklyCritical", query="SELECT count(EI.ID) AS CRITICAL"
++" FROM DEFINED_EVENT AS DE"
++" INNER JOIN EVENT_INSTANCE AS EI ON DE.ID=EI.OCCURRED_EVENT"
++" INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV=ES.ID"
++" WHERE ES.SEVERITY='Critical'"
++" GROUP BY date_trunc('week', date)"
++" ORDER BY date_trunc('week', date) DESC", resultSetMapping="WeeklyCritical")
+
+@SqlResultSetMapping(
+name="WeeklyError",
+classes={
+@ConstructorResult(
+targetClass=WeeklyDiagram.class,
+columns={
+@ColumnResult(name="ERROR", type = int.class)
+}
+)
+}
+)
+
+@NamedNativeQuery(name="EventInstance.getWeeklyError", query="SELECT count(EI.ID) AS ERROR"
++" FROM DEFINED_EVENT AS DE"
++" INNER JOIN EVENT_INSTANCE AS EI ON DE.ID=EI.OCCURRED_EVENT"
++" INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV=ES.ID"
++" WHERE ES.SEVERITY='Error'"
++" GROUP BY date_trunc('week', date)"
++" ORDER BY date_trunc('week', date) DESC", resultSetMapping="WeeklyError")
+
 public class EventInstance {
 
 	@Id
