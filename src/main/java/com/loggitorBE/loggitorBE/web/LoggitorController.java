@@ -53,7 +53,6 @@ import com.nexmo.client.NexmoClientException;
 @RestController
 public class LoggitorController {
 
-
 	@Autowired
 	private DefinedEventRepo eventRepo;
 
@@ -65,7 +64,7 @@ public class LoggitorController {
 
 	@Autowired
 	private DefectSeverityRepo defRepo;
-  
+
 	@Autowired
 	private EventSeverityRepo eventSevRepo;
 
@@ -74,19 +73,18 @@ public class LoggitorController {
 
 	@Autowired
 	private FixActionRepo actionRepo;
-	
+
 	@Autowired
 	private UserRepository userRepo;
 
-
-
+	// init workers pool
+	// private WorkersPool workersPool = new WorkersPool(3);
 
 	@RequestMapping("/events")
 	public Iterable<DefinedEvent> getEvents() {
 		return eventRepo.findAll();
 	}
 
-	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
 	@ResponseBody
@@ -94,12 +92,9 @@ public class LoggitorController {
 			@PathVariable("pageSize") int pageSize, HttpServletRequest req, HttpServletResponse res)
 			throws ServletException {
 
-		if(pageNumber < 1 || pageSize < 1)
-		{
+		if (pageNumber < 1 || pageSize < 1) {
 			return eventRepo.getEventsResult(new PageRequest(0, 999, Sort.Direction.ASC, "id"));
-		}
-		else
-		{
+		} else {
 			return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
 		}
 	}
@@ -115,11 +110,11 @@ public class LoggitorController {
 	@ResponseBody
 	public boolean addEvent(@RequestBody EventsResult event) {
 		try {
-		
+
 			String appAndType = event.getAppName();
 			int indexStrik = appAndType.indexOf("-");
 			String appName = appAndType.substring(0, indexStrik);
-			String appType = appAndType.substring(indexStrik  + 1 ,appAndType.length()) ;
+			String appType = appAndType.substring(indexStrik + 1, appAndType.length());
 			String defSeverity = event.getDefSeverity();
 			String comperator = event.getComperator();
 			Double percent = event.getPercent();
@@ -136,7 +131,7 @@ public class LoggitorController {
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
 			/////////////////////////////////////////////////
 			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
-			
+
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -146,7 +141,8 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0).longValue(), msg, action, ds, es, app);
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0).longValue(), msg,
+					action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
 
@@ -160,37 +156,32 @@ public class LoggitorController {
 	@ResponseBody
 	public boolean deleteEvent(@PathVariable("eventID") long evenID) {
 		try {
-			
+
 			ArrayList<EventInstance> eventIns = eventInsRepo.getEveInsByDefinedEveId(evenID);
-			
-			for(EventInstance i: eventIns)
-			{
+
+			for (EventInstance i : eventIns) {
 				eventInsRepo.deleteById(i.getId());
 			}
-			
+
 			eventRepo.deleteById(evenID);
 			return true;
-			
+
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			return false;
 		}
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.PUT)
 	@ResponseBody
-	public boolean updateEvent(@RequestBody EventsResult event)
-	{
+	public boolean updateEvent(@RequestBody EventsResult event) {
 		try {
-			
+
 			BigInteger id = event.getId();
 			String appAndType = event.getAppName();
 			int indexStrik = appAndType.indexOf("-");
 			String appName = appAndType.substring(0, indexStrik);
-			String appType = appAndType.substring(indexStrik  + 1 ,appAndType.length()) ;
+			String appType = appAndType.substring(indexStrik + 1, appAndType.length());
 			String defSeverity = event.getDefSeverity();
 			String comperator = event.getComperator();
 			Double percent = event.getPercent();
@@ -200,13 +191,13 @@ public class LoggitorController {
 			String des = event.getDescription();
 			String userName = event.getuserName();
 			String msg = event.getMsg();
-			
+
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
 			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
-			
+
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -215,8 +206,7 @@ public class LoggitorController {
 			ds.setId(defID.get(0).longValue());
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
-			
-	
+
 			Optional<DefinedEvent> eventToUpdate = eventRepo.findById(id.longValue());
 			eventToUpdate.get().setPercent(percent);
 			eventToUpdate.get().setComperator(comperator);
@@ -228,10 +218,10 @@ public class LoggitorController {
 			eventToUpdate.get().setApp(app);
 			eventToUpdate.get().setUserId(userID.get(0).longValue());
 			eventToUpdate.get().setMsg(msg);
-			
+
 			eventRepo.save(eventToUpdate.get());
 			return true;
-			
+
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			return false;
@@ -272,197 +262,174 @@ public class LoggitorController {
 
 	// calling the method that create the actions by applications table
 	@RequestMapping("/actionsbyapp/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") Date date, 
+	public ArrayList<ActionsByApp> getActionsByApp(@PathVariable("date") Date date,
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
-		
+
 		if (pageSize < 1 || pageNumber < 1) {
-			return appRepo.getActionsByApp(date,999,0);
+			return appRepo.getActionsByApp(date, 999, 0);
 		} else {
 			int limit = pageSize;
 			int offset = pageNumber - 1;
 			offset = offset * limit;
-			return appRepo.getActionsByApp(date,limit,offset);
+			return appRepo.getActionsByApp(date, limit, offset);
 		}
 	}
 
 	// calling the method that create the actions by severities table
 	@RequestMapping("/actionsbyseverity/{date}/{pageSize}/{PageNumber}")
-	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") Date date, 
+	public ArrayList<ActionsBySeverity> getActionsBySeverity(@PathVariable("date") Date date,
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
-		
+
 		if (pageSize < 1 || pageNumber < 1) {
-			return eventSevRepo.getActionsBySeverity(date,999,0);
+			return eventSevRepo.getActionsBySeverity(date, 999, 0);
 		} else {
 			int limit = pageSize;
 			int offset = pageNumber - 1;
 			offset = offset * limit;
-		return eventSevRepo.getActionsBySeverity(date,limit,offset);
+			return eventSevRepo.getActionsBySeverity(date, limit, offset);
 		}
 
 	}
 
-	
-	
-	
-	
 	/*
 	 * calling the method to get JSON for Daily chart
 	 */
 	@RequestMapping("/getDailyChart/{date}/{pageSize}/{PageNumber}")
-	private ArrayList<DailyChartReturned> getDailyChartReturned(@PathVariable("date") Date date, 
+	private ArrayList<DailyChartReturned> getDailyChartReturned(@PathVariable("date") Date date,
 			@PathVariable("pageSize") int pageSize, @PathVariable("PageNumber") int pageNumber) {
-	
+
 		String fullName;
 		float[] floatArr;
-		ArrayList<DailyChart> arr = getDailyChart(date,pageSize,pageNumber);
-		
-		
+		ArrayList<DailyChart> arr = getDailyChart(date, pageSize, pageNumber);
+
 		/*
-		 * index 0 -> cri
-		 * index 1 -> war
-		 * index 2 -> err
+		 * index 0 -> cri index 1 -> war index 2 -> err
 		 * 
 		 * map to sort the values
 		 */
-		HashMap<String, float[]> tempMap= new HashMap<>();
-		
+		HashMap<String, float[]> tempMap = new HashMap<>();
+
 		// iterate over Daily chart arrayList
-		for(DailyChart d: arr)
-		{
+		for (DailyChart d : arr) {
 			fullName = d.getName() + "-" + d.getType();
-			if(tempMap.get(fullName) != null)
-			{
+			if (tempMap.get(fullName) != null) {
 				// if the key exists in the map
-				switch (d.getSeverity())
-				{
+				switch (d.getSeverity()) {
 				case "Critical":
 					tempMap.get(fullName)[0] = d.getPercent();
 					break;
-					
+
 				case "Warning":
 					tempMap.get(fullName)[1] = d.getPercent();
 					break;
-					
+
 				case "Error":
 					tempMap.get(fullName)[2] = d.getPercent();
 					break;
 				}
-				
-			}
-			else
-			{
+
+			} else {
 				floatArr = new float[3];
 				floatArr[0] = 0;
 				floatArr[1] = 0;
 				floatArr[2] = 0;
-				
-				switch (d.getSeverity())
-				{
+
+				switch (d.getSeverity()) {
 				case "Critical":
 					floatArr[0] = d.getPercent();
 					break;
-					
+
 				case "Warning":
 					floatArr[1] = d.getPercent();
 					break;
-					
+
 				case "Error":
 					floatArr[2] = d.getPercent();
 					break;
 				}
-				
+
 				tempMap.put(fullName, floatArr);
 			}
-			
+
 			floatArr = null;
 			fullName = null;
 
 		}
-		
-		
+
 		// returned result
 		ArrayList<DailyChartReturned> result = new ArrayList<>();
-		
+
 		// get keys entry as set
 		Set<HashMap.Entry<String, float[]>> setRes = tempMap.entrySet();
-		
+
 		// iterate over the entry set
-		for(HashMap.Entry<String, float[]> entry: setRes)
-		{
-			result.add(new DailyChartReturned(entry.getKey(), 
-					entry.getValue()[0], entry.getValue()[1], entry.getValue()[2]));
+		for (HashMap.Entry<String, float[]> entry : setRes) {
+			result.add(new DailyChartReturned(entry.getKey(), entry.getValue()[0], entry.getValue()[1],
+					entry.getValue()[2]));
 		}
-		
-		
+
 		return result;
-	
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/*
-	 *  DailyChart method for getDailyChart API
+	 * DailyChart method for getDailyChart API
 	 */
-	private ArrayList<DailyChart> getDailyChart(Date date, 
-			int pageSize, int pageNumber) {
-		
-		
+	private ArrayList<DailyChart> getDailyChart(Date date, int pageSize, int pageNumber) {
+
 		if (pageSize < 1 || pageNumber < 1) {
-			return eventRepo.getDailyChart(date,999,0);
+			return eventRepo.getDailyChart(date, 999, 0);
 		} else {
 			int limit = pageSize;
 			int offset = pageNumber - 1;
 			offset = offset * limit;
-			return eventRepo.getDailyChart(date,limit,offset);
-			
+			return eventRepo.getDailyChart(date, limit, offset);
+
 		}
-		
 
 	}
-	
-	
-	
+
 	// calling the method that return the event severities
 	@RequestMapping("/getEventSevList")
 	public ArrayList<EventSevList> getEventsSev() {
 		return eventSevRepo.getEventsSev();
 	}
 
-
-	
 	/*
-	 * check the event in db and adding event instances
-	 * using SysTools class
+	 * check the event in db and adding event instances using SysTools class
 	 */
 	@RequestMapping("/runActionSys")
-	public void runActionSys() throws AddressException, JSONException, IOException, MessagingException, NexmoClientException {
-		System.out.println("Checking Events Starts");
-		SysTools mytools = new SysTools(eventRepo,eventInsRepo);
-		mytools.loopOverEvents();
-		System.out.println("Checking Events Ended");
+	public void runActionSys()
+			throws AddressException, JSONException, IOException, MessagingException, NexmoClientException {
+		// init workers pool
+//		WorkersPool workersPool = new WorkersPool(3);
+		DefinedEventList myList = new DefinedEventList(eventRepo);
+		Worker worker = new Worker(myList);
+		worker.loopOverEvents();
+//		workersPool.setJob(myList);
+//		workersPool.startWork();
+
+		/*
+		 * System.out.println("Checking Events is Started");
+		 * 
+		 * 
+		 * Worker run1 = new Worker(myList, 1); Worker run2 = new Worker(myList, 2);
+		 * Worker run3 = new Worker(myList, 3);
+		 * 
+		 * run1.start(); run2.start(); run3.start();
+		 * 
+		 * System.out.println("Checking Events is Ended");
+		 */
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping("/countDefinedEvent")
 	public int countDefinedEvent() {
 		return eventRepo.countDefinedEve();
 	}
-	
-	
-	
-	
+
 	@RequestMapping("/countEventIns")
 	public int countEventIns() {
 		return eventInsRepo.countEventIns();
 	}
-	
-	
+
 }
