@@ -20,13 +20,8 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 	
 
 	@Query(nativeQuery = true)
-	ArrayList<WeeklyDiagram> getWeeklyWarning();
-	
-	@Query(nativeQuery = true)
-	ArrayList<WeeklyDiagram> getWeeklyCritical();
-	
-	@Query(nativeQuery = true)
-	ArrayList<WeeklyDiagram> getWeeklyError();
+	ArrayList<WeeklyDiagram> getWeeklyDiagram();
+
 
 	
 }	

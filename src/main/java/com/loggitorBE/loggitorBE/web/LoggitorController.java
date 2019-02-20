@@ -311,20 +311,11 @@ public class LoggitorController {
 	}
 	
 	
-	@RequestMapping("/WeeklyWarning")
-	public ArrayList<WeeklyDiagram> getWeeklyWarning() {
-		return eventInsRepo.getWeeklyWarning();
+	@RequestMapping("/WeeklyDiagram")
+	public ArrayList<WeeklyDiagram> getWeeklyDiagram() {
+		return eventInsRepo.getWeeklyDiagram();
 	}
 	
-	@RequestMapping("/WeeklyCritical")
-	public ArrayList<WeeklyDiagram> getWeeklyCritical() {
-		return eventInsRepo.getWeeklyCritical();
-	}
-	
-	@RequestMapping("/WeeklyError")
-	public ArrayList<WeeklyDiagram> getWeeklyError() {
-		return eventInsRepo.getWeeklyError();
-	}
 
 
 }
