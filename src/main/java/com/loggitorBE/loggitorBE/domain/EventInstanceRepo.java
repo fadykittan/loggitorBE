@@ -19,11 +19,16 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 			@Param("limit") int limit,
 			@Param("offset") int offset);
 	
-	
+
+
+	@Query(nativeQuery = true)
+	ArrayList<WeeklyDiagram> getWeeklyDiagram();
+
 	
 	
 	@Query(value ="SELECT * FROM event_instance WHERE occurred_event = ?1",nativeQuery = true)
 	ArrayList<EventInstance> getEveInsByDefinedEveId(@Param("DefinedEventId") long id);
+
 
 	
 	
