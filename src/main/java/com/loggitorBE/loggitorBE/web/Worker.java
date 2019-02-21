@@ -23,10 +23,12 @@ public class Worker {
 	private EventInstanceRepo eventInsRepo;
 
 	private DefinedEventList task;
-	private int threadNum;
+	//private int threadNum;
 
-	public Worker(DefinedEventList task) {
+	public Worker(DefinedEventList task, DefinedEventRepo deRepo, EventInstanceRepo eiRepo ) {
 		this.task = task;
+		this.definedEveRepo = deRepo;
+		this.eventInsRepo = eiRepo;
 	}
 
 	/*
@@ -44,22 +46,26 @@ public class Worker {
 		 */
 //		DefinedEventPOJO event;
 
-		System.out.println("task");
+		System.out.println("Threads Started");
 		task.getAllEvents().parallelStream().forEach(event -> {
-			System.out.println("Thread Num: " + threadNum + "Works on Event ID: " + event.getId());
+			System.out.println("Thread Works on Event ID: " + event.getId());
 			String app = event.getApp_name();
 			String severity = event.getDef_severity();
-
+			ReadEventFromDB JSONReader = new ReadEventFromDB();
+			
 			Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 			System.out.println(sqlDate.toString());
 			try {
-				ReadEventFromDB.getJSONfromURL(app, severity, sqlDate);
+				System.out.println("Open API");
+				JSONReader.getJSONfromURL(app, severity, sqlDate);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			
-			while (ReadEventFromDB.hasNext()) {
-				float percent = ReadEventFromDB.getNext();
+
+			System.out.println("=====> Check API: " + JSONReader.hasNext());
+			while (JSONReader.hasNext()) {
+				float percent = JSONReader.getNext();
+				System.out.println("=====> API Percent: " + percent);
 				try {
 					switch (event.getComperator().toLowerCase()) {
 					case "greater than":
@@ -87,6 +93,10 @@ public class Worker {
 					e.printStackTrace();
 				}
 			}
+
+			JSONReader.close();
+			System.out.println("Close API");
+
 		});
 	}
 	/*
@@ -117,31 +127,42 @@ public class Worker {
 	 */
 	private void insertEventInstance(BigInteger id)
 			throws AddressException, MessagingException, IOException, NexmoClientException {
-		// perform the action
-		String action = definedEveRepo.findActionById(id);
-		String msg = definedEveRepo.findMsgById(id);
-		if (action.equals("Email")) {
-			String email = definedEveRepo.findEmailById(id);
-			Email.sendEmailMessage(email, "Loggitor Action System", msg);
-		} else if (action.equals("SMS")) {
-			String phone = definedEveRepo.findPhoneById(id);
-			// "972525151592"
-			SMS.smsSend(msg, phone);
-		}
 
-		/************ action ends *****************/
-
-		DefinedEvent event = definedEveRepo.findById(id);
-		if (event == null) {
-			System.out.println("ID Does not exist");
-			return;
-		}
-
+		// check if the event is exist
 		Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
-		EventInstance eventIns = new EventInstance(sqlDate, event);
-		eventInsRepo.save(eventIns);
+		if (eventInsRepo.checkIfInsExist(sqlDate, id) == 0) {
+			System.out.println("The Event Instance is not exist");
+			// perform the action
+			String action = definedEveRepo.findActionById(id);
+			String msg = definedEveRepo.findMsgById(id);
+			if (action.equals("Email")) {
+				String email = definedEveRepo.findEmailById(id);
+				Email.sendEmailMessage(email, "Loggitor Action System", msg);
+			} else if (action.equals("SMS")) {
+				String phone = definedEveRepo.findPhoneById(id);
+				// "972525151592"
+				SMS.smsSend(msg, phone);
+			}
+
+			/************ action ends *****************/
+
+			DefinedEvent event = definedEveRepo.findById(id);
+			if (event == null) {
+				System.out.println("ID Does not exist");
+				return;
+			}
+
+			EventInstance eventIns = new EventInstance(sqlDate, event);
+			eventInsRepo.save(eventIns);
+			System.out.println("Event Instance Inserted");
+		}
+		System.out.println("The Event Instance is exist " + eventInsRepo.checkIfInsExist(sqlDate, id) + " times");
 	}
 
+	
+	
+	
+	
 	public void setTask(DefinedEventList task) {
 		this.task = task;
 	}

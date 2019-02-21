@@ -403,14 +403,16 @@ public class LoggitorController {
 			throws AddressException, JSONException, IOException, MessagingException, NexmoClientException {
 		// init workers pool
 //		WorkersPool workersPool = new WorkersPool(3);
+		System.out.println("Checking Events is Started");
 		DefinedEventList myList = new DefinedEventList(eventRepo);
-		Worker worker = new Worker(myList);
+		Worker worker = new Worker(myList, eventRepo, eventInsRepo);
 		worker.loopOverEvents();
+		System.out.println("Checking Events is Ended");
 //		workersPool.setJob(myList);
 //		workersPool.startWork();
 
 		/*
-		 * System.out.println("Checking Events is Started");
+		 * 
 		 * 
 		 * 
 		 * Worker run1 = new Worker(myList, 1); Worker run2 = new Worker(myList, 2);
@@ -418,7 +420,7 @@ public class LoggitorController {
 		 * 
 		 * run1.start(); run2.start(); run3.start();
 		 * 
-		 * System.out.println("Checking Events is Ended");
+		 * 
 		 */
 	}
 

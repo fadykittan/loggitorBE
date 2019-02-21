@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.domain;
 
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 	
 	
 	@Query(value ="SELECT * FROM event_instance WHERE occurred_event = ?1",nativeQuery = true)
-	ArrayList<EventInstance> getEveInsByDefinedEveId(@Param("DefinedEventId") long date);
+	ArrayList<EventInstance> getEveInsByDefinedEveId(@Param("DefinedEventId") long id);
 
 	
 	
@@ -30,6 +31,7 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 	int countEventIns();
 	
 	
-	
+	@Query(value = "select count(ei.id) from event_instance as ei where ei.date = ?1 and ei.occurred_event = ?2", nativeQuery = true)
+	int checkIfInsExist(@Param("date") Date date,@Param("eID") BigInteger eID);
 	
 }	
