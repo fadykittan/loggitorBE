@@ -50,12 +50,12 @@ public class SMS {
 		}
 	}
 
-	public static void smsSend() throws IOException, NexmoClientException {
+	public static void smsSend(String messageText, String to) throws IOException, NexmoClientException {
 		NexmoClient client = new NexmoClient.Builder().apiKey("c2d4480c").apiSecret("lzgyKIVeeApqo8YG").build();
 
-		String messageText = "Hello from action system\n";
+		//String messageText = "Hello from action system\n";
 	
-		TextMessage message = new TextMessage("ActionSystem", "972525151592", messageText);
+		TextMessage message = new TextMessage("ActionSystem", to, messageText);
 		//TextMessage message = new TextMessage("Action System", "972526840315", messageText);
 		
 		SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);

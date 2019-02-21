@@ -107,7 +107,7 @@ public class DefinedEvent {
 	private String comperator;
 	private String name;
 	private String description;
-	private BigInteger userId;
+	private long userId;
 	private String msg;
 	
 
@@ -179,7 +179,7 @@ public class DefinedEvent {
 	
 	
 
-	public DefinedEvent(Double percent, String comperator, String name, String description, BigInteger userId,
+	public DefinedEvent(Double percent, String comperator, String name, String description, long userId,
 			String msg, FixAction fixAction, DefectSeverity defectSev, EventSeverity eventSev, App app) {
 		super();
 		this.percent = percent;
@@ -280,11 +280,11 @@ public class DefinedEvent {
 		this.eventInstances.add(eventInstance);
 	}
 
-	public BigInteger getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(BigInteger userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
