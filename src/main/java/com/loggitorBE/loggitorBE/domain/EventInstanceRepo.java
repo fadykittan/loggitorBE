@@ -32,8 +32,8 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 
 	
 	
-	@Query(value = "SELECT COUNT(*) FROM event_instance", nativeQuery = true)
-	int countEventIns();
+	@Query(value = "SELECT COUNT(*) FROM event_instance where event_instance.date = ?1", nativeQuery = true)
+	int countEventIns(@Param("date") Date dat);
 	
 	
 	@Query(value = "select count(ei.id) from event_instance as ei where ei.date = ?1 and ei.occurred_event = ?2", nativeQuery = true)

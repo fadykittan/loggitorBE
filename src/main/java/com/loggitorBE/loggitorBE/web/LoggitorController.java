@@ -134,7 +134,8 @@ public class LoggitorController {
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
 			/////////////////////////////////////////////////
-			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			//ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			AccessUser user = new AccessUser();
 
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
@@ -145,7 +146,7 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, userID.get(0).longValue(), msg,
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, user.getIdByEmail(userName, userRepo), msg,
 					action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
@@ -200,7 +201,9 @@ public class LoggitorController {
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
-			ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			
+			//ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
+			AccessUser user = new AccessUser();
 
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
@@ -220,7 +223,7 @@ public class LoggitorController {
 			eventToUpdate.get().setDefectSev(ds);
 			eventToUpdate.get().setEventSev(es);
 			eventToUpdate.get().setApp(app);
-			eventToUpdate.get().setUserId(userID.get(0).longValue());
+			eventToUpdate.get().setUserId(user.getIdByEmail(userName, userRepo));
 			eventToUpdate.get().setMsg(msg);
 
 			eventRepo.save(eventToUpdate.get());
@@ -440,9 +443,9 @@ public class LoggitorController {
 		return eventRepo.countDefinedEve();
 	}
 
-	@RequestMapping("/countEventIns")
-	public int countEventIns() {
-		return eventInsRepo.countEventIns();
+	@RequestMapping("/countEventIns/{date}")
+	public int countEventIns(@PathVariable("date") Date date) {
+		return eventInsRepo.countEventIns(date);
 	}
 
 }
