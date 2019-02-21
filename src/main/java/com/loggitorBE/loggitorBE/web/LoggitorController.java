@@ -443,9 +443,9 @@ public class LoggitorController {
 		return eventRepo.countDefinedEve();
 	}
 
-	@RequestMapping("/countEventIns")
-	public int countEventIns() {
-		return eventInsRepo.countEventIns();
+	@RequestMapping("/countEventIns/{date}")
+	public int countEventIns(@PathVariable("date") Date date) {
+		return eventInsRepo.countEventIns(date);
 	}
 
 }
