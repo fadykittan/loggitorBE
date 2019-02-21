@@ -17,6 +17,11 @@ public interface EventInstanceRepo extends CrudRepository<EventInstance, Long>{
 	ArrayList<EventInstanceOnDate> getEventInsTable(@Param("date") Date date,
 			@Param("limit") int limit,
 			@Param("offset") int offset);
+	
+
+	@Query(nativeQuery = true)
+	ArrayList<WeeklyDiagram> getWeeklyDiagram();
+
 
 	
 }	

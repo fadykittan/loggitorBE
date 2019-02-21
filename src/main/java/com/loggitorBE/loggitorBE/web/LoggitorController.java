@@ -40,6 +40,7 @@ import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
+import com.loggitorBE.loggitorBE.domain.WeeklyDiagram;
 
 @RestController
 public class LoggitorController {
@@ -308,6 +309,13 @@ public class LoggitorController {
 	public ArrayList<EventSevList> getEventsSev() {
 		return eventSevRepo.getEventsSev();
 	}
+	
+	
+	@RequestMapping("/WeeklyDiagram")
+	public ArrayList<WeeklyDiagram> getWeeklyDiagram() {
+		return eventInsRepo.getWeeklyDiagram();
+	}
+	
 
 
 }
