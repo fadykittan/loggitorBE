@@ -1,20 +1,17 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.loggitorBE.loggitorBE.JsonReader;
-import com.loggitorBE.loggitorBE.admin.domain.UserRepository;
 
 public class AccessUser {
 
 	
 	//private JSONArray jsonArr;
-	private String baseUrl = "https://adminfinal5.herokuapp.com/emails/";
+	private String baseUrl = "https://adminfinal5.herokuapp.com/getUserIdByEmail/";
 	
 	
 	public AccessUser() {
@@ -26,15 +23,18 @@ public class AccessUser {
 	private long getJSONfromURL(String email) throws JSONException, IOException
 	{
 		String url = baseUrl + email;
-		JSONArray jsonArr = JsonReader.readJsonFromUrl(url);
-		return jsonArr.getJSONObject(0).getLong("id");
+		JSONObject json = JsonReader.read_JSONObject_FromUrl(url);
+		return json.getLong("id");
+//		JSONArray jsonArr = JsonReader.readJsonFromUrl(url);
+//		return jsonArr.getJSONObject(0).getLong("id");
 	}
 	
 	
-	public long getIdByEmail(String email, UserRepository userRepo)
+	public long getIdByEmail(String email) throws JSONException, IOException//, UserRepository userRepo)
 	{
-		ArrayList<BigInteger> userID = userRepo.findByUserName(email);
-		return userID.get(0).longValue();
+		return this.getJSONfromURL(email);
+//		ArrayList<BigInteger> userID = userRepo.findByUserName(email);
+//		return userID.get(0).longValue();
 	}
 	
 }

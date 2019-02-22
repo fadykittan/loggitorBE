@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.loggitorBE.loggitorBE.admin.domain.UserRepository;
 import com.loggitorBE.loggitorBE.domain.ActionsByApp;
 import com.loggitorBE.loggitorBE.domain.ActionsBySeverity;
 import com.loggitorBE.loggitorBE.domain.ActionsName;
@@ -48,9 +47,7 @@ import com.loggitorBE.loggitorBE.domain.EventSeverityRepo;
 import com.loggitorBE.loggitorBE.domain.EventsResult;
 import com.loggitorBE.loggitorBE.domain.FixAction;
 import com.loggitorBE.loggitorBE.domain.FixActionRepo;
-
 import com.loggitorBE.loggitorBE.domain.WeeklyDiagram;
-
 import com.nexmo.client.NexmoClientException;
 
 
@@ -78,8 +75,8 @@ public class LoggitorController {
 	@Autowired
 	private FixActionRepo actionRepo;
 
-	@Autowired
-	private UserRepository userRepo;
+//	@Autowired
+//	private UserRepository userRepo;
 
 	// init workers pool
 	// private WorkersPool workersPool = new WorkersPool(3);
@@ -137,6 +134,8 @@ public class LoggitorController {
 			//ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
 			AccessUser user = new AccessUser();
 
+			System.out.println("User ID: " + user.getIdByEmail(userName));
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -146,7 +145,7 @@ public class LoggitorController {
 			EventSeverity es = new EventSeverity(eventSev);
 			es.setId(eventSeverityID.get(0).longValue());
 
-			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, user.getIdByEmail(userName, userRepo), msg,
+			DefinedEvent eve = new DefinedEvent(percent, comperator, eventName, des, user.getIdByEmail(userName), msg,
 					action, ds, es, app);
 			eventRepo.save(eve);
 			return true;
@@ -205,6 +204,8 @@ public class LoggitorController {
 			//ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
 			AccessUser user = new AccessUser();
 
+			System.out.println("User ID: " + user.getIdByEmail(userName));
+			
 			App app = new App(appName, appType);
 			app.setId(appID.get(0).longValue());
 			FixAction action = new FixAction(actionName);
@@ -223,7 +224,7 @@ public class LoggitorController {
 			eventToUpdate.get().setDefectSev(ds);
 			eventToUpdate.get().setEventSev(es);
 			eventToUpdate.get().setApp(app);
-			eventToUpdate.get().setUserId(user.getIdByEmail(userName, userRepo));
+			eventToUpdate.get().setUserId(user.getIdByEmail(userName));
 			eventToUpdate.get().setMsg(msg);
 
 			eventRepo.save(eventToUpdate.get());
@@ -447,5 +448,6 @@ public class LoggitorController {
 	public int countEventIns(@PathVariable("date") Date date) {
 		return eventInsRepo.countEventIns(date);
 	}
+	
 
 }
