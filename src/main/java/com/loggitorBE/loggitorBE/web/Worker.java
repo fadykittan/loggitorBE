@@ -49,15 +49,16 @@ public class Worker {
 		System.out.println("Threads Started");
 		task.getAllEvents().parallelStream().forEach(event -> {
 			System.out.println("Thread Works on Event ID: " + event.getId());
-			String app = event.getApp_name();
+			String appName = event.getApp_name();
 			String severity = event.getDef_severity();
+			String appType = event.getApp_type();
 			ReadEventFromDB JSONReader = new ReadEventFromDB();
 			
 			Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 			System.out.println(sqlDate.toString());
 			try {
 				System.out.println("Open API");
-				JSONReader.getJSONfromURL(app, severity, sqlDate);
+				JSONReader.getJSONfromURL(appName, appType, severity, sqlDate);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

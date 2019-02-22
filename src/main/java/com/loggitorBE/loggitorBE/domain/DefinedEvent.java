@@ -80,6 +80,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "PERCENT", type = Float.class),
 				@ColumnResult(name = "APPID", type = BigInteger.class),
 				@ColumnResult(name = "APPNAME", type = String.class),
+				@ColumnResult(name = "APPTYPE", type = String.class),
 				@ColumnResult(name = "DEFID", type = BigInteger.class),
 				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTIONID", type = BigInteger.class),
