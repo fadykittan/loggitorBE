@@ -14,7 +14,9 @@ public class EventsResult {
 	private String actionName;
 	private String description;
 	private String userName;
+	private BigInteger user_id;
 	private String msg;
+	
 
 
 	public EventsResult() {
@@ -54,6 +56,26 @@ public class EventsResult {
 		this.actionName = actionName;
 		this.description = description;
 		this.userName = userName;
+		this.msg = msg;
+	}
+
+	
+
+
+	public EventsResult(BigInteger id, String appName, String defSeverity, String comperator, Double percent,
+			String eventName, String eventSeverity, String actionName, String description, BigInteger user_id,
+			String msg) {
+		super();
+		this.id = id;
+		this.appName = appName;
+		this.defSeverity = defSeverity;
+		this.comperator = comperator;
+		this.percent = percent;
+		this.eventName = eventName;
+		this.eventSeverity = eventSeverity;
+		this.actionName = actionName;
+		this.description = description;
+		this.user_id = user_id;
 		this.msg = msg;
 	}
 
@@ -132,15 +154,6 @@ public class EventsResult {
 	}
 
 
-	public String getuserName() {
-		return userName;
-	}
-
-
-	public void setuserName(String userName) {
-		this.userName = userName;
-	}
-
 
 	public String getMsg() {
 		return msg;
@@ -149,6 +162,26 @@ public class EventsResult {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public BigInteger getUser_id() {
+		return user_id;
+	}
+
+
+	public void setUser_id(BigInteger user_id) {
+		this.user_id = user_id;
 	}
 
 	

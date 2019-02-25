@@ -5,15 +5,18 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	
 	
+//	@Query(nativeQuery = true)
+//	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
+	
 	@Query(nativeQuery = true)
-	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
+	ArrayList<EventsResult> getEventsResult(int limit, int offset);
 	
 	
 	@Query(nativeQuery = true)

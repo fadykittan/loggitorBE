@@ -1,6 +1,7 @@
 package com.loggitorBE.loggitorBE.web;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +12,9 @@ public class AccessUser {
 
 	
 	//private JSONArray jsonArr;
-	private String baseUrl = "https://adminfinal5.herokuapp.com/getUserIdByEmail/";
+	private String baseUrlId = "https://adminfinal5.herokuapp.com/getUserIdByEmail/";
+	
+	private String baseUrlEmail = "https://adminfinal5.herokuapp.com/emailByUser/";
 	
 	
 	public AccessUser() {
@@ -22,7 +25,7 @@ public class AccessUser {
 
 	private long getJSONfromURL(String email) throws JSONException, IOException
 	{
-		String url = baseUrl + email;
+		String url = baseUrlId + email;
 		JSONObject json = JsonReader.read_JSONObject_FromUrl(url);
 		return json.getLong("id");
 //		JSONArray jsonArr = JsonReader.readJsonFromUrl(url);
@@ -35,6 +38,20 @@ public class AccessUser {
 		return this.getJSONfromURL(email);
 //		ArrayList<BigInteger> userID = userRepo.findByUserName(email);
 //		return userID.get(0).longValue();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	private String getJSONemailFromURL(BigInteger id) throws JSONException, IOException
+	{
+		String url = baseUrlEmail + id;
+		JSONObject json = JsonReader.read_JSONObject_FromUrl(url);
+		return json.getString("email");
+	}
+	
+	public String getEmailById(BigInteger id) throws JSONException, IOException
+	{
+		return this.getJSONemailFromURL(id);
 	}
 	
 }

@@ -11,13 +11,13 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +86,44 @@ public class LoggitorController {
 		return eventRepo.findAll();
 	}
 
+	
+	
+	//@SuppressWarnings("deprecation")
+	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
+	@ResponseBody
+	public ArrayList<EventsResult> getEventsResult(@PathVariable("pageNumber") int pageNumber,
+			@PathVariable("pageSize") int pageSize)
+			throws ServletException, JSONException, IOException {
+
+		ArrayList<EventsResult> list;
+		
+		if (pageSize < 1 || pageNumber < 1) {
+			list = eventRepo.getEventsResult(999, 0);
+		} else {
+			int limit = pageSize;
+			int offset = pageNumber - 1;
+			offset = offset * limit;
+			list = eventRepo.getEventsResult(limit, offset);
+		}
+		
+		AccessUser users = new AccessUser();
+		String email;
+		
+		for(EventsResult event : list)
+		{
+			email = users.getEmailById(event.getUser_id());
+			event.setUserName(email);
+		}
+		
+		return list;
+		
+		
+		
+
+	}
+	
+	
+	/*
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
 	@ResponseBody
@@ -99,6 +137,8 @@ public class LoggitorController {
 			return eventRepo.getEventsResult(new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id"));
 		}
 	}
+	*/
+	
 
 	@RequestMapping("/getAllEventInsTable/{date}")
 	public ArrayList<EventInstanceOnDate> getActionLogTable(@PathVariable Date date) {
@@ -123,7 +163,7 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
-			String userName = event.getuserName();
+			String userName = event.getUserName();
 			String msg = event.getMsg();
 
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
@@ -193,7 +233,7 @@ public class LoggitorController {
 			String eventSev = event.getEventSeverity();
 			String actionName = event.getActionName();
 			String des = event.getDescription();
-			String userName = event.getuserName();
+			String userName = event.getUserName();
 			String msg = event.getMsg();
 
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
@@ -449,5 +489,12 @@ public class LoggitorController {
 		return eventInsRepo.countEventIns(date);
 	}
 	
+	
+//	@RequestMapping("/addApp/{id}/{name}/{type}")
+//	public int countEventIns(@PathVariable("id") long id,
+//			@PathVariable("name") String name,@PathVariable("type") String type) {
+//		appRepo.addApp(id, name, type);
+//		return 1;
+//	}
 
 }
