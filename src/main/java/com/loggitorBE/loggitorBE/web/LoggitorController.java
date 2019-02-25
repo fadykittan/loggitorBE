@@ -90,7 +90,6 @@ public class LoggitorController {
 	
 	//@SuppressWarnings("deprecation")
 	@RequestMapping("/viewEvents/{pageNumber}/{pageSize}")
-	@ResponseBody
 	public ArrayList<EventsResult> getEventsResult(@PathVariable("pageNumber") int pageNumber,
 			@PathVariable("pageSize") int pageSize)
 			throws ServletException, JSONException, IOException {
