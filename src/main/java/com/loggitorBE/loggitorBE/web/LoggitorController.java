@@ -237,11 +237,13 @@ public class LoggitorController {
 			String userName = event.getUserName();
 			String msg = event.getMsg();
 
+			System.out.println("App - Type in updat event: " + appName + " " + appType);
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);
 			
+			System.out.println("App ID in update event: " + appID);
 			//ArrayList<BigInteger> userID = userRepo.findByUserName(userName);
 			AccessUser user = new AccessUser();
 
