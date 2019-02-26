@@ -1,17 +1,15 @@
 package com.loggitorBE.loggitorBE.admin.domain;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository <Users, Long> {
 
 	
-	@Query(value ="select u.user_id from users u where u.email = ?1",nativeQuery = true)
-	ArrayList<BigInteger> findByUserName(String userName);
+//	@Query(value ="select u.user_id from users u where u.email = ?1",nativeQuery = true)
+//	ArrayList<BigInteger> findByUserName(String userName);
 	
+//	@Query(value ="select u.email from users u where u.user_id = ?1",nativeQuery = true)
+//	ArrayList<String> findEmailById(String userName);
 	
 	/*
     @Query(nativeQuery=true)

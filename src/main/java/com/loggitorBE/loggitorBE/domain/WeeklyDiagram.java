@@ -1,7 +1,5 @@
 package com.loggitorBE.loggitorBE.domain;
 
-import java.sql.Date;
-
 public class WeeklyDiagram {
 	String Week;
 	String Critical;

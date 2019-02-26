@@ -11,21 +11,23 @@ public class ReadEventFromDB {
 	private JSONArray jsonArr;
 	private int i=0;
 	private String baseUrl = "https://amdocstask.herokuapp.com/SeverityAppPercent/";
-	
+	private JsonReader jsonReader;
 	
 	
 	
 	public ReadEventFromDB() {
 		super();
+		jsonReader = new JsonReader();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public void getJSONfromURL(String app, String severity, Date date) throws JSONException, IOException
+	public void getJSONfromURL(String appName, String appType, String severity, Date date) throws JSONException, IOException
 	{
 		System.out.println(date.toString());
-		String url = baseUrl + app + "/" + severity + "/" + date;
-		jsonArr = JsonReader.readJsonFromUrl(url);
+		String url = baseUrl + appName + "/" + severity + "/" + date;
+		jsonArr = jsonReader.readJsonFromUrl(url);
+		System.out.println("Print JSON: " + jsonArr.toString());
 		//jsonArr = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/BLM/Error/2019-02-15");
 		i = 0;
 

@@ -35,6 +35,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTION_NAME", type = String.class),
 				@ColumnResult(name = "DESCRIPTION", type = String.class),
+				@ColumnResult(name = "USER_ID", type = BigInteger.class),
+				@ColumnResult(name = "MSG", type = String.class)}) })
+
+@NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION, DE.USER_ID AS USER_ID, DE.MSG " + 
+		"FROM DEFINED_EVENT AS DE " + 
+		"INNER JOIN APP AS A ON DE.APP = A.ID " + 
+		"INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID " + 
+		"INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID " + 
+		"INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID " +
+		"LIMIT (:limit) OFFSET (:offset) ", resultSetMapping = "CostumeEvents")
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+@SqlResultSetMapping(name = "CostumeEvents", classes = {
+		@ConstructorResult(targetClass = EventsResult.class, columns = {
+				@ColumnResult(name = "ID", type = BigInteger.class),
+				@ColumnResult(name = "NAME", type = String.class),
+				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
+				@ColumnResult(name = "COMPERATOR", type = String.class),
+
+				@ColumnResult(name = "PERCENT", type = Double.class),
+				@ColumnResult(name = "TITLE", type = String.class),
+
+				@ColumnResult(name = "SEVERITY", type = String.class),
+				@ColumnResult(name = "ACTION_NAME", type = String.class),
+				@ColumnResult(name = "DESCRIPTION", type = String.class),
 				@ColumnResult(name = "USERNAME", type = String.class),
 				@ColumnResult(name = "MSG", type = String.class)}) })
 
@@ -44,7 +69,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 		"INNER JOIN DEFECT_SEVERITY AS DS ON DE.DEFECT_SEV = DS.ID " + 
 		"INNER JOIN EVENT_SEVERITY AS ES ON DE.EVENT_SEV = ES.ID " + 
 		"INNER JOIN FIX_ACTION AS FA ON DE.FIX_ACTION = FA.ID " + 
-		"INNER JOIN USERS AS U ON DE.USER_ID = U.USER_ID ", resultSetMapping = "CostumeEvents")
+		"INNER JOIN USERS AS U ON DE.USER_ID = U.USER_ID ", resultSetMapping = "CostumeEvents")*/
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 /*
 @NamedNativeQuery(name = "DefinedEvent.getEventsResult", query = "SELECT DE.ID, CONCAT(A.NAME, '-', A.TYPE) AS NAME , DS.DEFECT_SEVERITY, DE.COMPERATOR, DE.PERCENT,DE.NAME AS TITLE, ES.SEVERITY, FA.ACTION_NAME, DE.DESCRIPTION "
@@ -80,6 +107,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@ColumnResult(name = "PERCENT", type = Float.class),
 				@ColumnResult(name = "APPID", type = BigInteger.class),
 				@ColumnResult(name = "APPNAME", type = String.class),
+				@ColumnResult(name = "APPTYPE", type = String.class),
 				@ColumnResult(name = "DEFID", type = BigInteger.class),
 				@ColumnResult(name = "DEFECT_SEVERITY", type = String.class),
 				@ColumnResult(name = "ACTIONID", type = BigInteger.class),

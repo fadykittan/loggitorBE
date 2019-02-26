@@ -9,6 +9,7 @@ public class DefinedEventPOJO {
 	private float percent;
 	private BigInteger app_id;
 	private String app_name;
+	private String app_type;
 	private BigInteger def_id;
 	private String def_severity;
 	private BigInteger action_id;
@@ -18,14 +19,30 @@ public class DefinedEventPOJO {
 	// constructor 
 	public DefinedEventPOJO() {}
 	
+//	public DefinedEventPOJO(BigInteger id, String comperator, float percent, BigInteger app_id, String app_name,
+//			BigInteger def_id, String def_severity, BigInteger action_id, String action_name) {
+//		super();
+//		this.id = id;
+//		this.comperator = comperator;
+//		this.percent = percent;
+//		this.app_id = app_id;
+//		this.app_name = app_name;
+//		this.def_id = def_id;
+//		this.def_severity = def_severity;
+//		this.action_id = action_id;
+//		this.action_name = action_name;
+//	}
+	
+	
 	public DefinedEventPOJO(BigInteger id, String comperator, float percent, BigInteger app_id, String app_name,
-			BigInteger def_id, String def_severity, BigInteger action_id, String action_name) {
+			String app_type, BigInteger def_id, String def_severity, BigInteger action_id, String action_name) {
 		super();
 		this.id = id;
 		this.comperator = comperator;
 		this.percent = percent;
 		this.app_id = app_id;
 		this.app_name = app_name;
+		this.app_type = app_type;
 		this.def_id = def_id;
 		this.def_severity = def_severity;
 		this.action_id = action_id;
@@ -41,6 +58,8 @@ public class DefinedEventPOJO {
 	public BigInteger getId() {
 		return id;
 	}
+
+
 
 	public void setId(BigInteger id) {
 		this.id = id;
@@ -108,6 +127,14 @@ public class DefinedEventPOJO {
 
 	public void setAction_name(String action_name) {
 		this.action_name = action_name;
+	}
+
+	public String getApp_type() {
+		return app_type;
+	}
+
+	public void setApp_type(String app_type) {
+		this.app_type = app_type;
 	}
 
 	

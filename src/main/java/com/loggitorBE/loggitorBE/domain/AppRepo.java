@@ -22,6 +22,12 @@ public interface AppRepo extends CrudRepository<App, Long> {
 	ArrayList<ActionsByApp> getActionsByApp(Date date, int limit, int offset);
 	
 	
+	
+	
+//	@Query(value ="INSERT INTO app (id,name,type) VALUES (?1, ?2, ?3)",nativeQuery = true)
+//	void addApp(long id, String app, String type);
+	
+	
 	//List<App> findByName(String name);
 	
 

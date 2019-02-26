@@ -5,15 +5,18 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	
 	
+//	@Query(nativeQuery = true)
+//	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
+	
 	@Query(nativeQuery = true)
-	ArrayList<EventsResult> getEventsResult(PageRequest pageRequest);
+	ArrayList<EventsResult> getEventsResult(int limit, int offset);
 	
 	
 	@Query(nativeQuery = true)
@@ -33,16 +36,20 @@ public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	String findActionById(BigInteger id);
 	
 	
-	@Query(value = "select u.email from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
-	String findEmailById(BigInteger id);
+//	@Query(value = "select u.email from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
+//	String findEmailById(BigInteger id);
 	
 	
 	@Query(value = "select de.msg from defined_event de where de.id = ?1", nativeQuery = true)
 	String findMsgById(BigInteger id);
 	
 	
-	@Query(value = "select u.phone from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
-	String findPhoneById(BigInteger id);
+	@Query(value = "select de.user_id from defined_event as de where de.id = ?1", nativeQuery = true)
+	BigInteger findUserIdByEventId(BigInteger id);
+	
+	
+//	@Query(value = "select u.phone from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
+//	String findPhoneById(BigInteger id);
 	
 	
 	@Query(value = "SELECT COUNT(*) FROM defined_event", nativeQuery = true)

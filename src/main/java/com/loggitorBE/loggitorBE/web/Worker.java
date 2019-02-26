@@ -49,15 +49,16 @@ public class Worker {
 		System.out.println("Threads Started");
 		task.getAllEvents().parallelStream().forEach(event -> {
 			System.out.println("Thread Works on Event ID: " + event.getId());
-			String app = event.getApp_name();
+			String appName = event.getApp_name();
 			String severity = event.getDef_severity();
+			String appType = event.getApp_type();
 			ReadEventFromDB JSONReader = new ReadEventFromDB();
 			
 			Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 			System.out.println(sqlDate.toString());
 			try {
 				System.out.println("Open API");
-				JSONReader.getJSONfromURL(app, severity, sqlDate);
+				JSONReader.getJSONfromURL(appName, appType, severity, sqlDate);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -130,18 +131,24 @@ public class Worker {
 
 		// check if the event is exist
 		Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
+		AccessUser users = new AccessUser();
+		BigInteger userId = definedEveRepo.findUserIdByEventId(id);
 		if (eventInsRepo.checkIfInsExist(sqlDate, id) == 0) {
 			System.out.println("The Event Instance is not exist");
 			// perform the action
 			String action = definedEveRepo.findActionById(id);
 			String msg = definedEveRepo.findMsgById(id);
 			if (action.equals("Email")) {
-				String email = definedEveRepo.findEmailById(id);
-				Email.sendEmailMessage(email, "Loggitor Action System", msg);
+				
+				String email = users.getEmailById(userId);
+
+				if(email != null)
+					Email.sendEmailMessage(email, "Loggitor Action System", msg);
+				
 			} else if (action.equals("SMS")) {
-				String phone = definedEveRepo.findPhoneById(id);
+				//String phone = definedEveRepo.findPhoneById(id);
 				// "972525151592"
-				SMS.smsSend(msg, phone);
+				//SMS.smsSend(msg, phone);
 			}
 
 			/************ action ends *****************/
