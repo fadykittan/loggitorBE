@@ -165,7 +165,9 @@ public class LoggitorController {
 			String userName = event.getUserName();
 			String msg = event.getMsg();
 
+			System.out.println("App: " + appName + appType);
 			ArrayList<BigInteger> appID = appRepo.findByAppnameAndType(appName, appType);
+			System.out.println("App id: " + appID);
 			ArrayList<BigInteger> defID = defRepo.findByDefSeverity(defSeverity);
 			ArrayList<BigInteger> actionID = actionRepo.findByActionName(actionName);
 			ArrayList<BigInteger> eventSeverityID = eventSevRepo.findByEvSeverity(eventSev);

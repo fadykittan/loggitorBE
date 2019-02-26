@@ -36,16 +36,16 @@ public interface DefinedEventRepo extends CrudRepository<DefinedEvent, Long> {
 	String findActionById(BigInteger id);
 	
 	
-	@Query(value = "select u.email from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
-	String findEmailById(BigInteger id);
+//	@Query(value = "select u.email from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
+//	String findEmailById(BigInteger id);
 	
 	
 	@Query(value = "select de.msg from defined_event de where de.id = ?1", nativeQuery = true)
 	String findMsgById(BigInteger id);
 	
 	
-	@Query(value = "select u.phone from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
-	String findPhoneById(BigInteger id);
+//	@Query(value = "select u.phone from defined_event de, users u where de.id = ?1 and de.user_id = u.user_id", nativeQuery = true)
+//	String findPhoneById(BigInteger id);
 	
 	
 	@Query(value = "SELECT COUNT(*) FROM defined_event", nativeQuery = true)
