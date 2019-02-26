@@ -55,7 +55,7 @@ public class SMS {
 
 		//String messageText = "Hello from action system\n";
 		to = fixNumber(to);
-		
+		System.out.println("Sending SMS to: " + to);
 		TextMessage message = new TextMessage("ActionSystem", to, messageText);
 		//TextMessage message = new TextMessage("Action System", "972526840315", messageText);
 		
