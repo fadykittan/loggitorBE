@@ -59,6 +59,7 @@ public class Email
 		transport.close();
 		
 		logger.info("Email sent successfully.");
+		System.out.println("Email sent successfully.");
 	}
 	
 	/*
