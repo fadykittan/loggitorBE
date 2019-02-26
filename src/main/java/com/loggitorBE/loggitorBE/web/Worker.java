@@ -132,15 +132,19 @@ public class Worker {
 		// check if the event is exist
 		Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 		AccessUser users = new AccessUser();
+		BigInteger userId = definedEveRepo.findUserIdByEventId(id);
 		if (eventInsRepo.checkIfInsExist(sqlDate, id) == 0) {
 			System.out.println("The Event Instance is not exist");
 			// perform the action
 			String action = definedEveRepo.findActionById(id);
 			String msg = definedEveRepo.findMsgById(id);
 			if (action.equals("Email")) {
-				//String email = definedEveRepo.findEmailById(id);
-				String email = users.getEmailById(id);
-				Email.sendEmailMessage(email, "Loggitor Action System", msg);
+				
+				String email = users.getEmailById(userId);
+
+				if(email != null)
+					Email.sendEmailMessage(email, "Loggitor Action System", msg);
+				
 			} else if (action.equals("SMS")) {
 				//String phone = definedEveRepo.findPhoneById(id);
 				// "972525151592"
