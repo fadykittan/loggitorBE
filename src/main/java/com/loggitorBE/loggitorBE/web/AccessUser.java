@@ -15,7 +15,7 @@ public class AccessUser {
 	private String baseUrlId = "https://adminfinal5.herokuapp.com/getUserIdByEmail/";
 	private JsonReader jsonReader;
 	private String baseUrlEmail = "https://adminfinal5.herokuapp.com/emailByUser/";
-	
+	private String baseUrlPhone = "https://adminfinal5.herokuapp.com/phoneByUser/";
 	
 	
 	public AccessUser() {
@@ -65,5 +65,24 @@ public class AccessUser {
 	{
 		return this.getJSONemailFromURL(id);
 	}
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	
+	public String getPhoneById(BigInteger id) throws JSONException, IOException
+	{
+		String url = baseUrlPhone + id;
+		System.out.println("Print URL in getJSONemailFromURL: " + url);
+		JSONObject json = jsonReader.read_JSONObject_FromUrl(url);
+		System.out.println("Print Json in AccessUser: " + json.toString());
+		try {
+			return json.getString("phone");
+		} 
+		catch (Exception e) {
+			return null;
+			// TODO: handle exception
+		}
+	}
+	
 	
 }

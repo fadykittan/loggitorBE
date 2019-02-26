@@ -146,9 +146,12 @@ public class Worker {
 					Email.sendEmailMessage(email, "Loggitor Action System", msg);
 				
 			} else if (action.equals("SMS")) {
-				//String phone = definedEveRepo.findPhoneById(id);
+				
+				String phone = users.getPhoneById(userId);
+				System.out.println("Sending SMS to: " + phone);
 				// "972525151592"
-				//SMS.smsSend(msg, phone);
+				if(phone != null)
+					SMS.smsSend(msg, phone);
 			}
 
 			/************ action ends *****************/

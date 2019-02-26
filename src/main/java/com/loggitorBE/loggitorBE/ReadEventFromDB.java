@@ -25,8 +25,8 @@ public class ReadEventFromDB {
 	public void getJSONfromURL(String appName, String appType, String severity, Date date) throws JSONException, IOException
 	{
 		System.out.println(date.toString());
-		String url = baseUrl + appName + "/" + severity + "/" + date;
-		//String url = baseUrl + appName + "/" + severity + "/" + "2019-02-25";
+		//String url = baseUrl + appName + "/" + severity + "/" + date;
+		String url = baseUrl + appName + "/" + severity + "/" + "2019-02-25";
 		jsonArr = jsonReader.readJsonFromUrl(url);
 		System.out.println("Print JSON: " + jsonArr.toString());
 		//jsonArr = JsonReader.readJsonFromUrl("https://amdocstask.herokuapp.com/SeverityAppPercent/BLM/Error/2019-02-15");
