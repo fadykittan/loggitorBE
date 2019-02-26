@@ -18,7 +18,7 @@ import com.nexmo.client.sms.messages.TextMessage;
 
 public class SMS {
 	private static final Logger logger = LoggerFactory.getLogger(LoggitorBeApplication.class);
-	
+	private static final String ilCountryCode = "972";
 	public static String msgsend() {
 
 		try {
@@ -54,7 +54,8 @@ public class SMS {
 		NexmoClient client = new NexmoClient.Builder().apiKey("c2d4480c").apiSecret("lzgyKIVeeApqo8YG").build();
 
 		//String messageText = "Hello from action system\n";
-	
+		to = fixNumber(to);
+		
 		TextMessage message = new TextMessage("ActionSystem", to, messageText);
 		//TextMessage message = new TextMessage("Action System", "972526840315", messageText);
 		
@@ -63,6 +64,15 @@ public class SMS {
 			System.out.println(responseMessage);
 		
 		logger.info("SMS sent successfully.");
+		System.out.println("SMS sent successfully.");
 	}
+	
+	
+	private static String fixNumber(String num)
+	{
+		return ilCountryCode + num.substring(1, num.length());
+	}
+
+	
 
 }
