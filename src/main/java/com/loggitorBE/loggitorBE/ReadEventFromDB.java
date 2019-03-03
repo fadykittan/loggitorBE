@@ -10,7 +10,7 @@ public class ReadEventFromDB {
 
 	private JSONArray jsonArr;
 	private int i=0;
-	private String baseUrl = "https://amdocstask.herokuapp.com/SeverityAppPercent/";
+	private String baseUrl = "https://amdocslogfiles.herokuapp.com/";
 	private JsonReader jsonReader;
 	
 	

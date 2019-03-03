@@ -58,8 +58,8 @@ public class Email
 		transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
 		transport.close();
 		
-		logger.info("Email sent successfully.");
-		System.out.println("Email sent successfully.");
+		logger.info("==> Email sent successfully.");
+		System.out.println("==> Email sent successfully.");
 	}
 	
 	/*

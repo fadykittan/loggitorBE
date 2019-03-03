@@ -144,6 +144,8 @@ public class Worker {
 
 				if(email != null)
 					Email.sendEmailMessage(email, "Loggitor Action System", msg);
+				else
+					System.out.println("***********Email Not Found, Cannot send Email");
 				
 			} else if (action.equals("SMS")) {
 				
@@ -152,6 +154,8 @@ public class Worker {
 				// "972525151592"
 				if(phone != null)
 					SMS.smsSend(msg, phone);
+				else
+					System.out.println("***********Phone Number Not Found, Cannot send SMS");
 			}
 
 			/************ action ends *****************/
