@@ -63,8 +63,8 @@ public class SMS {
 		for (SmsSubmissionResponseMessage responseMessage : response.getMessages()) 
 			System.out.println(responseMessage);
 		
-		logger.info("SMS sent successfully.");
-		System.out.println("SMS sent successfully.");
+		logger.info("==> SMS sent successfully.");
+		System.out.println("==> SMS sent successfully.");
 	}
 	
 	
